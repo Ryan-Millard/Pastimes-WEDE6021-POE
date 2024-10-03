@@ -17,9 +17,6 @@ tmp/
 temp/
 *.tmp
 
-# Database files
-*.sql
-
 # Generated files
 /public/images/products/*_thumb.* 
 /public/images/products/*_small.*
