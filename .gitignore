@@ -1,0 +1,28 @@
+# Environment files
+.env
+
+# IDE specific files
+*.idea/
+*.vscode/
+*.sublime-workspace
+*.sublime-project
+*.swp
+
+# Logs
+logs/
+*.log
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Database files
+*.sql
+
+# Generated files
+/public/images/products/*_thumb.* 
+/public/images/products/*_small.*
+
+# Ignore the .git directory
+/.git/
