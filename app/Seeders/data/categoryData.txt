@@ -1,0 +1,5 @@
+1,Men's Clothing,Second-hand men's apparel
+2,Women's Clothing,Second-hand women's apparel
+3,Children's Clothing,Second-hand children's apparel
+4,Vintage Clothing,Second-hand vintage styles
+5,Designer Clothing,Second-hand designer brands
