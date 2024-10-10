@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 03, 2024 at 11:27 AM
+-- Generation Time: Oct 10, 2024 at 09:50 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.1.25
 
@@ -11,9 +11,17 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
 --
 -- Database: `pastimes`
 --
+CREATE DATABASE IF NOT EXISTS `pastimes` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `pastimes`;
 
 -- --------------------------------------------------------
 
@@ -21,6 +29,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `Admins`
 --
 
+DROP TABLE IF EXISTS `Admins`;
 CREATE TABLE `Admins` (
   `admin_id` int(11) UNSIGNED NOT NULL,
   `user_id` int(11) UNSIGNED NOT NULL,
@@ -41,6 +50,7 @@ INSERT INTO `Admins` (`admin_id`, `user_id`, `role`) VALUES
 -- Table structure for table `Buyers`
 --
 
+DROP TABLE IF EXISTS `Buyers`;
 CREATE TABLE `Buyers` (
   `buyer_id` int(11) UNSIGNED NOT NULL,
   `user_id` int(11) UNSIGNED NOT NULL,
@@ -53,8 +63,7 @@ CREATE TABLE `Buyers` (
 --
 
 INSERT INTO `Buyers` (`buyer_id`, `user_id`, `buyer_rating`, `total_purchases`) VALUES
-(1, 2, 4.5, 10),
-(2, 6, NULL, 0);
+(1, 2, 4.5, 10);
 
 -- --------------------------------------------------------
 
@@ -62,6 +71,7 @@ INSERT INTO `Buyers` (`buyer_id`, `user_id`, `buyer_rating`, `total_purchases`) 
 -- Table structure for table `Categories`
 --
 
+DROP TABLE IF EXISTS `Categories`;
 CREATE TABLE `Categories` (
   `category_id` int(11) UNSIGNED NOT NULL,
   `category_name` varchar(25) NOT NULL,
@@ -85,6 +95,7 @@ INSERT INTO `Categories` (`category_id`, `category_name`, `description`) VALUES
 -- Table structure for table `Products`
 --
 
+DROP TABLE IF EXISTS `Products`;
 CREATE TABLE `Products` (
   `product_id` int(11) UNSIGNED NOT NULL,
   `seller_id` int(11) UNSIGNED NOT NULL,
@@ -112,9 +123,7 @@ INSERT INTO `Products` (`product_id`, `seller_id`, `category_id`, `product_condi
 (2, 1, 2, 'used', 'approved', 'Women\'s Dress', '', 29.99, 5, '', '', '', '', '', '2024-10-02 12:00:00'),
 (3, 1, 3, 'refurbished', 'pending', 'Children\'s T-Shirt', '', 15.00, 20, '', '', '', '', '', '2024-10-02 12:00:00'),
 (4, 1, 4, 'new', 'rejected', 'Vintage Jeans', '', 59.99, 2, '', '', '', '', '', '2024-10-02 12:00:00'),
-(5, 1, 5, 'used', 'pending', 'Designer Handbag', '', 199.99, 3, '', '', '', '', '', '2024-10-02 12:00:00'),
-(6, 1, 1, 'new', 'pending', 'delete me pls', 'nada', 999.00, 1, 'L', NULL, NULL, NULL, NULL, '2024-10-03 09:33:14'),
-(7, 1, 1, 'new', 'pending', 'delete me pls', 'nada', 999.00, 1, 'L', NULL, NULL, NULL, NULL, '2024-10-03 09:33:19');
+(5, 1, 5, 'used', 'pending', 'Designer Handbag', '', 199.99, 3, '', '', '', '', '', '2024-10-02 12:00:00');
 
 -- --------------------------------------------------------
 
@@ -122,6 +131,7 @@ INSERT INTO `Products` (`product_id`, `seller_id`, `category_id`, `product_condi
 -- Table structure for table `Product_Images`
 --
 
+DROP TABLE IF EXISTS `Product_Images`;
 CREATE TABLE `Product_Images` (
   `product_image_id` int(11) UNSIGNED NOT NULL,
   `product_id` int(11) UNSIGNED NOT NULL,
@@ -147,6 +157,7 @@ INSERT INTO `Product_Images` (`product_image_id`, `product_id`, `product_image_u
 -- Table structure for table `Sellers`
 --
 
+DROP TABLE IF EXISTS `Sellers`;
 CREATE TABLE `Sellers` (
   `seller_id` int(11) UNSIGNED NOT NULL,
   `user_id` int(11) UNSIGNED NOT NULL,
@@ -167,6 +178,7 @@ INSERT INTO `Sellers` (`seller_id`, `user_id`, `seller_rating`, `total_sales`) V
 -- Table structure for table `Shipping_Addresses`
 --
 
+DROP TABLE IF EXISTS `Shipping_Addresses`;
 CREATE TABLE `Shipping_Addresses` (
   `shipping_address_id` int(11) UNSIGNED NOT NULL,
   `user_id` int(11) UNSIGNED NOT NULL,
@@ -186,6 +198,7 @@ CREATE TABLE `Shipping_Addresses` (
 -- Table structure for table `Transactions`
 --
 
+DROP TABLE IF EXISTS `Transactions`;
 CREATE TABLE `Transactions` (
   `transaction_id` int(11) UNSIGNED NOT NULL,
   `buyer_id` int(11) UNSIGNED NOT NULL,
@@ -209,6 +222,7 @@ CREATE TABLE `Transactions` (
 -- Table structure for table `Transaction_Products`
 --
 
+DROP TABLE IF EXISTS `Transaction_Products`;
 CREATE TABLE `Transaction_Products` (
   `transaction_product_id` int(11) UNSIGNED NOT NULL,
   `transaction_id` int(11) UNSIGNED NOT NULL,
@@ -222,6 +236,7 @@ CREATE TABLE `Transaction_Products` (
 -- Table structure for table `Users`
 --
 
+DROP TABLE IF EXISTS `Users`;
 CREATE TABLE `Users` (
   `user_id` int(10) UNSIGNED NOT NULL,
   `username` varchar(255) NOT NULL,
@@ -240,20 +255,16 @@ CREATE TABLE `Users` (
 --
 
 INSERT INTO `Users` (`user_id`, `username`, `email`, `password_hash`, `first_name`, `last_name`, `bio`, `phone_number`, `registration_date`, `last_login`) VALUES
-(1, 'johndoe', 'john.doe@example.com', '$2y$10$Ik8VgC4vb829WuCI5.ZU.u371juzNfhhbg3Mo58tU2KdKdWnc4bZ2', 'John', 'Doe', '', '', '2024-09-30 10:00:00', '2024-09-30 10:00:00'),
-(2, 'janesmith', 'jane.smith@example.com', '$2y$10$DcFSCdhvE6/dgZAJbBQfT.RnPXavlple73.xV85zESXc6EWHvNvpi', 'Jane', 'Smith', '', '', '2024-09-30 10:00:00', '2024-09-30 10:00:00'),
-(4, 'alicewilliams', 'alice.williams@example.com', '$2y$10$fRHcBQ/8WnMzWWxsmkk6ie0pCavbDR4e0LdLgJWPIQ7J0cLqgRC3W', 'Alice', 'Williams', '', '', '2024-09-30 10:00:00', '2024-09-30 10:00:00'),
-(5, 'charliebrown', 'charlie.brown@example.com', '$2y$10$F2KLnDxRbt7gWTcxp7TgWe1LfeolmCYT1sut7rBfYte6.Y0QJNOBa', 'Charlie', 'Brown', '', '', '2024-09-30 10:00:00', '2024-09-30 10:00:00'),
-(6, 'davidmiller', 'david.miller@example.com', '$2y$10$Kirx7mqnjcvj8VpX8ozw0.QmJApOKLMTbXt36Not1MUAvfe.WAWXm', 'David', 'Miller', '', '', '2024-09-30 10:00:00', '2024-09-30 10:00:00'),
-(7, 'sarajohnson', 'sara.johnson@example.com', '$2y$10$jxGCvwkROoIL0xHSV7Ef5.XvSFlDW.Vo553qIKMxXD7pLBzFJqrTS', 'Sara', 'Johnson', '', '', '2024-09-30 10:00:00', '2024-09-30 10:00:00'),
-(8, 'kevinsmith', 'kevin.smith@example.com', '$2y$10$9D6nXmgLUqbB/GUVLqk.Huie8plC3CL4Zd3RtBkQuqVcsCq17fBAe', 'Kevin', 'Smith', '', '', '2024-09-30 10:00:00', '2024-09-30 10:00:00'),
-(9, 'lindawilson', 'linda.wilson@example.com', '$2y$10$uBNSX/qNpqMRmmW8nG3Fce8LpKiPaKt47.sWKjkARGcFgGRKfsC.2', 'Linda', 'Wilson', '', '', '2024-09-30 10:00:00', '2024-09-30 10:00:00'),
-(10, 'markthompson', 'mark.thompson@example.com', '$2y$10$zwtL.ulw67gUVKIY52VM.OiRhQVMxt42/zDwYV491WeWjchED6zbq', 'Mark', 'Thompson', '', '', '2024-09-30 10:00:00', '2024-09-30 10:00:00'),
-(11, 'ryan1', 'millardryandevon@gmail.com', '$2y$10$XsnrbXlvwufkeYMXb/wCjO2EcXGTWpNN26rFdHBOeF.Akxe5nvV9u', 'Ryan', 'Millard', '', '0672286791', '2024-10-03 10:18:45', '2024-10-03 10:18:45'),
-(12, 'hellofriend', 'johndoe@gmail.com', '$2y$10$l/QruhvPItPWAsZxq8AubOt1OOwdwzr9.XLZ3oWvZMKfa2Xtk9Qxe', 'John', 'Doe', '', '', '2024-10-03 10:26:11', '2024-10-03 10:26:11'),
-(13, 'ryan12', 'ryan@gmail.com', '$2y$10$vhatbCHaiaQTQiGWxrZIuOAPfL827KlojagVYFBYwZPPN4SaZHHmy', 'Ryan', 'Millard', '', '', '2024-10-03 10:29:58', '2024-10-03 10:29:58'),
-(14, 'ryan123', 'ryan@gmail.com', '$2y$10$L066bELV9QIasnGEanQM3.8bugZtpeMj6Gcj1rtVjCdPDADv7J1B2', 'Ryan', 'Millard', '', '', '2024-10-03 10:30:04', '2024-10-03 10:30:04'),
-(15, 'peter456', 'ryan@gmail.com', '$2y$10$u4ZcHt8cWvLlTGc722H2eu0sjJQe0MzayXhil5tapkewt7CmbTgPW', 'Ryan', 'Millard', '', '', '2024-10-03 10:53:40', '2024-10-03 10:53:40');
+(1, 'johndoe', 'john.doe@example.com', '$2y$10$K5y1YfD9GbeSefl6lrOnueRM/dXkUEZXaZHg1JCzOPce81HTTFTnO', 'John', 'Doe', '', '', '2024-09-30 10:00:00', '2024-09-30 10:00:00'),
+(2, 'janesmith', 'jane.smith@example.com', '$2y$10$/jazn/SLyK9b5SibrVM.DuZRAUZxnSjQhpCTr5/OG9g4Nztgy/F8i', 'Jane', 'Smith', '', '', '2024-09-30 10:00:00', '2024-09-30 10:00:00'),
+(3, 'bobjohnson', 'bob.johnson@example.com', '$2y$10$XPhkyrLrR79ph2kTDaB9ieG7KnjNxkkt6Q.LcIbL1C83PJ7nTSIEe', 'Bob', 'Johnson', '', '', '2024-09-30 10:00:00', '2024-09-30 10:00:00'),
+(4, 'alicewilliams', 'alice.williams@example.com', '$2y$10$ewH51aciEINKBrS0rTnbDuAGm1lbR09NcS56pMaACiyoWK5seoEQW', 'Alice', 'Williams', '', '', '2024-09-30 10:00:00', '2024-09-30 10:00:00'),
+(5, 'charliebrown', 'charlie.brown@example.com', '$2y$10$ADhIoBTt8ng5gpeS/m0leOhmEjEtjfwu1yJGVb6UtH/9RU6p3FWym', 'Charlie', 'Brown', '', '', '2024-09-30 10:00:00', '2024-09-30 10:00:00'),
+(6, 'davidmiller', 'david.miller@example.com', '$2y$10$AWdw5nLUSNeC3ZxW2Hd4V.WRdxwZ3P4Ucx5wzgmpLQy7pP15YyIGC', 'David', 'Miller', '', '', '2024-09-30 10:00:00', '2024-09-30 10:00:00'),
+(7, 'sarajohnson', 'sara.johnson@example.com', '$2y$10$nC1W3zSf4ZHM8A14MmMC8Od0lEXfvAceCix8ms8cAw/gc4xAheOR2', 'Sara', 'Johnson', '', '', '2024-09-30 10:00:00', '2024-09-30 10:00:00'),
+(8, 'kevinsmith', 'kevin.smith@example.com', '$2y$10$N5rrx0ZOOp.SLUGo.jBn8O.7n3DuF9piFRREDX76BZGmhp4yAeN.S', 'Kevin', 'Smith', '', '', '2024-09-30 10:00:00', '2024-09-30 10:00:00'),
+(9, 'lindawilson', 'linda.wilson@example.com', '$2y$10$TyLZKiXrqHvVzih82VV9yuon5DfJz/kO0lZWYx8mvv0yCG9bU7prG', 'Linda', 'Wilson', '', '', '2024-09-30 10:00:00', '2024-09-30 10:00:00'),
+(10, 'markthompson', 'mark.thompson@example.com', '$2y$10$R/V4u4t6AJTtuB4Umkgqke3dDlGs6PXJuPZ9wbf4eUrklokGnuzIy', 'Mark', 'Thompson', '', '', '2024-09-30 10:00:00', '2024-09-30 10:00:00');
 
 -- --------------------------------------------------------
 
@@ -261,6 +272,7 @@ INSERT INTO `Users` (`user_id`, `username`, `email`, `password_hash`, `first_nam
 -- Table structure for table `Wishlist_Items`
 --
 
+DROP TABLE IF EXISTS `Wishlist_Items`;
 CREATE TABLE `Wishlist_Items` (
   `wishlist_item_id` int(11) UNSIGNED NOT NULL,
   `buyer_id` int(11) UNSIGNED NOT NULL,
@@ -366,7 +378,7 @@ ALTER TABLE `Admins`
 -- AUTO_INCREMENT for table `Buyers`
 --
 ALTER TABLE `Buyers`
-  MODIFY `buyer_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `buyer_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `Categories`
@@ -378,7 +390,7 @@ ALTER TABLE `Categories`
 -- AUTO_INCREMENT for table `Products`
 --
 ALTER TABLE `Products`
-  MODIFY `product_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `product_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `Product_Images`
@@ -414,7 +426,7 @@ ALTER TABLE `Transaction_Products`
 -- AUTO_INCREMENT for table `Users`
 --
 ALTER TABLE `Users`
-  MODIFY `user_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `user_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `Wishlist_Items`
@@ -479,3 +491,6 @@ ALTER TABLE `Wishlist_Items`
   ADD CONSTRAINT `Wishlist_Items_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `Products` (`product_id`);
 COMMIT;
 
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
