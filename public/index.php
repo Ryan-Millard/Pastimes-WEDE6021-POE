@@ -4,16 +4,18 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Pastimes</title>
+	<link rel="stylesheet" href="css/index.css">
 </head>
 <body>
 	<?php
-		error_reporting(E_ALL);
-		ini_set('display_errors', 1);
-
 		session_start();
+	?>
 
+	<header>
+	<?php
 		require_once '../app/views/shared/header.php';
 	?>
+	</header>
 
 	<main>
 		<?php require_once '../app/app.php'; ?>
