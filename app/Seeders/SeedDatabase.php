@@ -9,6 +9,7 @@ require_once __DIR__ . '/SellerSeeder.php';
 require_once __DIR__ . '/CategorySeeder.php';
 require_once __DIR__ . '/ProductSeeder.php';
 require_once __DIR__ . '/ProductImageSeeder.php';
+require_once __DIR__ . '/WishlistSeeder.php';
 
 use App\Seeders\UserSeeder;
 use App\Seeders\AdminSeeder;
@@ -17,6 +18,7 @@ use App\Seeders\SellerSeeder;
 use App\Seeders\CategorySeeder;
 use App\Seeders\ProductSeeder;
 use App\Seeders\ProductImageSeeder;
+use App\Seeders\WishlistSeeder;
 
 class SeedDatabase {
 	public static function seed() {
@@ -29,15 +31,18 @@ class SeedDatabase {
 			$categorySeeder = new CategorySeeder();
 			$productSeeder = new ProductSeeder();
 			$productImageSeeder = new ProductImageSeeder();
+			$wishlistSeeder = new WishlistSeeder();
 
 			// Execute the seed method for each table
-			$userSeeder->seed();
+			// NB the order due to FKs
 			$adminSeeder->seed();
 			$buyerSeeder->seed();
+			$userSeeder->seed();
 			$sellerSeeder->seed();
 			$categorySeeder->seed();
-			$productSeeder->seed();
 			$productImageSeeder->seed();
+			$productSeeder->seed();
+			$wishlistSeeder->seed();
 
 			echo "Seeding completed successfully!\n";
 		} catch(\Exception $e) {

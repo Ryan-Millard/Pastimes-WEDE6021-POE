@@ -56,7 +56,7 @@ abstract class Seeder {
 	}
 
 	protected function loadData(callable $callback = null) {
-		echo "Callback: " . (is_null($callback) ? "null" : "not null") . "\n";
+		echo "Callback: " . (is_null($callback) ? "None (null)" : "Exists (not null)") . "\n";
 
 		$filePath = __DIR__ . '/data/' . $this->seedFile;
 		if (!file_exists($filePath)) {

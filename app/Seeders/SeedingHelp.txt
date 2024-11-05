@@ -2,5 +2,7 @@ To run the seed.php, you will need to be in this directory.
 
 
 To run scripts on Ubuntu linux with XAMPP,
-run '/opt/lampp/bin/php seed.php' within
-this Seeders directory.
+run '/opt/lampp/bin/php loadClothingStore.php' within
+this Seeders directory or
+run '/opt/lampp/bin/php Seeders/loadClothingStore.php' within
+the root directory (app).
