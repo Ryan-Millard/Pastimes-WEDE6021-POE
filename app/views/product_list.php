@@ -1,35 +1,47 @@
-<div class="container">
+<div class="container" id="<?= $containerId ?>">
+	<div class="centered-text">
+		<?php if(!empty($productListHeading)): ?>
+			<h1><?= htmlspecialchars($productListHeading); ?></h1>
+		<?php else: ?>
+			<h1>Shop</h1>
+		<?php endif; ?>
+	</div>
+
 	<?php if(!empty($products)): ?>
-		<?php for($i = 0; $i < count($products); $i++): ?>
-			<?php
-				$product = $products[$i];
-				$image = !empty($images[$i]) ? $images[$i] : 'default.jpg';
-			?>
-			<a href="/pastimes/products/<?= htmlspecialchars($product['product_id']); ?>" class="product-link">
-				<div>
-					<?php if(!empty($image)): ?>
-						<img
-							class="custom-image"
-							src="/pastimes/images/products/<?= htmlspecialchars($image); ?>"
-							alt="<?= htmlspecialchars($image); ?>"
-						>
-					<?php else: ?>
-						<?= 'Image Not found'; ?>
-					<?php endif; ?>
-				</div>
-				<div class="product-details">
-					<p class="product-name">
-						<?= strlen(htmlspecialchars($product['product_name'])) > 25 ?
-									substr(htmlspecialchars($product['product_name']), 0, 30) . '...'
-									:
-									htmlspecialchars($product['product_name'])
-						?>
-						(<?= htmlspecialchars($product['product_condition']); ?>)
-						<p class="product-price">R <?= htmlspecialchars($product['price']); ?></p>
-					</p>
-				</div>
-			</a>
-		<?php endfor; ?>
+		<div class="flex-evenly">
+			<?php for($i = 0; $i < count($products); $i++): ?>
+				<?php
+					$product = $products[$i];
+					$image = !empty($images[$i]) ? $images[$i] : 'default.jpg';
+				?>
+				<a href="/pastimes/products/<?= htmlspecialchars($product['product_id']); ?>" class="product-link">
+					<div>
+						<?php if(!empty($image)): ?>
+							<img
+								class="custom-image"
+								src="/pastimes/images/products/<?= htmlspecialchars($image); ?>"
+								alt="<?= htmlspecialchars($image); ?>"
+							>
+						<?php else: ?>
+							<?= 'Image Not found'; ?>
+						<?php endif; ?>
+					</div>
+					<div class="product-details">
+						<p class="product-name">
+							<?= strlen(htmlspecialchars($product['product_name'])) > 25 ?
+										substr(htmlspecialchars($product['product_name']), 0, 30) . '...'
+										:
+										htmlspecialchars($product['product_name'])
+							?>
+							(<?= htmlspecialchars($product['product_condition']); ?>)
+							<p class="product-price">R <?= htmlspecialchars($product['price']); ?></p>
+						</p>
+					</div>
+				</a>
+			<?php endfor; ?>
+		</div>
+	<?php elseif (isset($noProductFoundMessage)): ?>
+		<p><?= htmlspecialchars($noProductFoundMessage); ?></p>
 	<?php else: ?>
 		<p>No products found.</p>
 	<?php endif; ?>

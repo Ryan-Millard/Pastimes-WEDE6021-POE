@@ -28,6 +28,7 @@
 	use App\Models\SellerModel;
 	use App\Models\ProductModel;
 	use App\Models\ProductImageModel;
+	use App\Models\WishlistModel;
 
 	use \App\Middleware\AuthMiddleware;
 	use \App\Middleware\AdminMiddleware;
@@ -68,10 +69,10 @@
 		}
 
 		private static function initControllers() {
-			self::setController('home', new HomeController(self::getModel('product'), self::getModel('productImage'), self::getModel('seller'), self::getModel('user'), self::getModel('category')));
+			self::setController('home', new HomeController(self::getModel('product'), self::getModel('productImage'), self::getModel('seller'), self::getModel('user'), self::getModel('category'), self::getModel('buyer'), self::getModel('wishlist')));
 			self::setController('category', new CategoryController(self::getModel('product'), self::getModel('productImage'), self::getModel('seller'), self::getModel('user'), self::getModel('category')));
 			self::setController('user', new UserController(self::getModel('user')));
-			self::setController('dashboard', new DashboardController(self::getModel('dashboard')));
+			self::setController('dashboard', new DashboardController(self::getModel('wishlist'), self::getModel('buyer')));
 			self::setController('admin', new AdminController(self::getModel('admin'), self::getModel('user'), self::getModel('buyer'), self::getModel('seller')));
 			self::setController('product', new ProductController(self::getModel('product')));
 			self::setController('error404', new Error404Controller(self::getModel('error404')));
@@ -81,14 +82,17 @@
 			self::setModel('home', null);
 			self::setModel('category', new CategoryModel());
 			self::setModel('user', new UserModel());
-			self::setModel('dashboard', null);
 			self::setModel('admin', new AdminModel());
 			self::setModel('buyer', new BuyerModel());
 			self::setModel('seller', new SellerModel());
 			self::setModel('product', new ProductModel());
 			self::setModel('productImage', new ProductImageModel());
 			self::setModel('error404', null);
+
+			// Initialize WishlistModel after product and productImage models
+			self::setModel('wishlist', new WishlistModel(self::getModel('productImage'), self::getModel('product')));
 		}
+
 
 		private static function initMiddleware() {
 			self::setMiddleware('auth', new AuthMiddleware());

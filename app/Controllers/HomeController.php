@@ -4,9 +4,13 @@ namespace App\Controllers;
 
 require_once __DIR__ . './../models/Model.php';
 require_once __DIR__ . './../models/ProductImageModel.php';
+require_once __DIR__ . './../models/BuyerModel.php';
+require_once __DIR__ . './../models/WishlistModel.php';
 require_once __DIR__ . '/Controller.php';
 
 use App\Models\Model;
+use App\Models\BuyerModel;
+use App\Models\WishlistModel;
 use App\Controllers\Controller;
 
 class HomeController extends Controller {
@@ -15,10 +19,15 @@ class HomeController extends Controller {
 	protected $sellerModel;
 	protected $userModel;
 	protected $categoryModel;
+	protected $buyerModel;
+	protected $wishlistModel;
 
 	public function __construct(Model $productModel = null, Model $productImageModel = null,
 								Model $sellerModel = null, Model $userModel = null,
-								Model $categoryModel = null) {
+								Model $categoryModel = null,
+								Model $buyerModel = null,
+								Model $wishlistModel = null
+	) {
 		parent::__construct();
 
 		$this->productModel = $productModel;
@@ -26,6 +35,8 @@ class HomeController extends Controller {
 		$this->sellerModel = $sellerModel;
 		$this->userModel = $userModel;
 		$this->categoryModel = $categoryModel;
+		$this->buyerModel = $buyerModel;
+		$this->wishlistModel = $wishlistModel;
 	}
 
 	public function index() {
@@ -94,5 +105,30 @@ class HomeController extends Controller {
 			'category' => $category
 		]);
 		$this->render('single_product');
+	}
+
+	public function addToWishlist() {
+		$flash_message = null;
+		['product_id' => $productId, 'quantity' => $productQuantity] = $_POST;
+		['user_id' => $userId] = $_SESSION['user'];
+		['buyer_id' => $buyerId] = $this->buyerModel->getByColumnValue('user_id', $userId);
+
+		$result = false;
+		try {
+			$insertData = [
+				'buyer_id' => $buyerId,
+				'product_id' => (int) $productId,
+				'quantity' => $productQuantity,
+			];
+			$result = $this->wishlistModel->insert($insertData);
+		} catch(\Exception $e) {
+			echo 'Error: ' . $e->getMessage();
+			$flash_message = 'An error occurred. Please try again in a few minutes';
+		}
+
+		if(!isset($flash_message))
+			$flash_message = ($result) ? 'Added to Wishlist' : 'This item is already in your wishlist';
+		$_SESSION['flash_message'] = $flash_message;
+		$this->redirect('/pastimes/products/' . $_POST['product_id']);
 	}
 }

@@ -53,9 +53,20 @@
 		<tr>
 			<th>Action</th>
 			<td>
-			<button onclick="showPopup('<?php echo 'Price R ' . $product['price']; ?>')">
-					Add to Shopping Cart
-				</button>
+			<form action="/pastimes/products/<?= $product['product_id'] ?>" method="POST">
+					<input type="hidden" name="product_id" value="<?= htmlspecialchars($product['product_id']); ?>">
+
+					<div class="centered-content">
+						<label for="quantity">Quantity:</label>
+						<div class="quantity-container">
+							<button type="button" class="quantity-btn" onclick="changeQuantity(-1)">-</button>
+							<input type="number" name="quantity" id="quantity" value="1" min="1" style="width: 50px; text-align: center;">
+							<button type="button" class="quantity-btn" onclick="changeQuantity(1)">+</button>
+						</div>
+
+						<button type="submit">Add to Wishlist</button>
+					</div>
+				</form>
 			</td>
 		</tr>
 	</table>
@@ -67,6 +78,22 @@
 	// use the flash_message popup
 	require_once 'shared/flash_message.php';
 ?>
+
+<script>
+const maxQuantity = <?= htmlspecialchars($product['quantity_available']); ?>; // Pass the available quantity to JavaScript
+
+function changeQuantity(amount) {
+    var quantityInput = document.getElementById('quantity');
+    var currentQuantity = parseInt(quantityInput.value);
+    var newQuantity = currentQuantity + amount;
+
+    // Ensure newQuantity is within the allowed limits
+    if (!isNaN(currentQuantity) && newQuantity >= 1 && newQuantity <= maxQuantity) {
+        quantityInput.value = newQuantity; // Update input value
+    }
+}
+</script>
+
 
 <style>
 /* Style for the table */
@@ -162,6 +189,40 @@ button:hover {
     background-color: #e2e6ea; /* Darker background on hover */
 }
 
+.quantity-container {
+    display: flex;
+    align-items: center;
+	margin-bottom: 5px;
+}
 
+.quantity-btn {
+    background-color: #007bff; /* Bootstrap primary color */
+    color: white;
+    border: none;
+    padding: 4px 9px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px; /* Larger text for the button */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.quantity-btn:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+}
+
+input[type="number"] {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 0 5px; /* Add space between buttons and input */
+}
+
+.centered-content {
+    display: flex; /* Enables Flexbox layout */
+    flex-direction: column; /* Arranges children in a column */
+    align-items: center; /* Centers children horizontally */
+    justify-content: center; /* Centers children vertically */
+	width: fit-content;
+}
 </style>
 

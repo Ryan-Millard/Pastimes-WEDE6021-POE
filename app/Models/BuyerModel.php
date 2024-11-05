@@ -11,5 +11,8 @@ class BuyerModel extends Model {
 		parent::__construct();
 		$this->tableName = 'Buyers';
 	}
-}
 
+	public function getByUserId($userId) {
+		return $this->getByColumnValue('user_id', $userId);
+	}
+}

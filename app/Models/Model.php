@@ -100,8 +100,13 @@ abstract class Model
 		// Bind the data to be inserted dynamically
 		$stmt->bind_param($types, ...array_values($data));
 
-		if(!$stmt->execute())
-			throw new Exception("Error executing query: " . $stmt->error);
+		try {
+			if(!$stmt->execute())
+				throw new Exception("Error executing query: " . $stmt->error);
+		} catch(Exception $e) {
+			echo $e->getMessage();
+			return false;
+		}
 
 		return $stmt->insert_id; // Return the inserted ID (Primary Key)
 	}

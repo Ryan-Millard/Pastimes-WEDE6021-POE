@@ -8,9 +8,8 @@
 		<?php if(empty($_SESSION['user']['username'])): ?>
 			<a class="light-emphasis" href="/pastimes/login">Log in</a>
 		<?php else: ?>
-				<span class="emphasis">
-					Logged in as: <?= $_SESSION['user']['username'] ?>
-				</span>
+			<a class="light-emphasis" href="/pastimes/dashboard#wishlist">Wishlist</a>
+			<a class="light-emphasis" href="/pastimes/messages">Messages</a>
 			<a class="light-emphasis" href="/pastimes/logout">Log out</a>
 		<?php endif; ?>
 	</strong>

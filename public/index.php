@@ -1,3 +1,10 @@
+<?php
+	session_start();
+
+	ini_set('display_errors', 1);
+	ini_set('display_startup_errors', 1);
+	error_reporting(E_ALL);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,10 +14,6 @@
 	<link rel="stylesheet" href="css/index.css">
 </head>
 <body>
-	<?php
-		session_start();
-	?>
-
 	<header>
 	<?php
 		require_once '../app/views/shared/header.php';
