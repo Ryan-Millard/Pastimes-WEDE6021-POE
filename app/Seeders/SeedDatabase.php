@@ -10,6 +10,7 @@ require_once __DIR__ . '/CategorySeeder.php';
 require_once __DIR__ . '/ProductSeeder.php';
 require_once __DIR__ . '/ProductImageSeeder.php';
 require_once __DIR__ . '/WishlistSeeder.php';
+require_once __DIR__ . '/MessageSeeder.php';
 
 use App\Seeders\UserSeeder;
 use App\Seeders\AdminSeeder;
@@ -19,6 +20,7 @@ use App\Seeders\CategorySeeder;
 use App\Seeders\ProductSeeder;
 use App\Seeders\ProductImageSeeder;
 use App\Seeders\WishlistSeeder;
+use App\Seeders\MessageSeeder;
 
 class SeedDatabase {
 	public static function seed() {
@@ -32,6 +34,7 @@ class SeedDatabase {
 			$productSeeder = new ProductSeeder();
 			$productImageSeeder = new ProductImageSeeder();
 			$wishlistSeeder = new WishlistSeeder();
+			$messageSeeder = new MessageSeeder();
 
 			// Execute the seed method for each table
 			// NB the order due to FKs
@@ -43,6 +46,7 @@ class SeedDatabase {
 			$productImageSeeder->seed();
 			$productSeeder->seed();
 			$wishlistSeeder->seed();
+			$messageSeeder->seed();
 
 			echo "Seeding completed successfully!\n";
 		} catch(\Exception $e) {

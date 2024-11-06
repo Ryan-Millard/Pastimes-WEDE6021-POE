@@ -63,10 +63,18 @@ abstract class Seeder {
 			throw new \Exception("Seed file not found: " . $filePath);
 		}
 
+		// handle txt files with csv format
 		$handle = fopen($filePath, 'r');
 		if ($handle) {
 			while (($line = fgets($handle)) !== false) {
 				$data = array_map('trim', explode(',', $line));
+
+				// Check each value in the data and replace 'null' string with NULL
+				foreach ($data as $key => $value)
+					if (strtolower($value) === 'null')
+						$data[$key] = null;  // Modify the value in the $data array
+
+
 
 				// Check if a valid callback was provided
 				if(is_callable($callback))
