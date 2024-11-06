@@ -105,15 +105,19 @@ class HomeController extends Controller {
 
 		// fetch the details of the user that is currently logged in
 		$buyer = $this->buyerModel->getByUserId($_SESSION['user']['user_id']);
-		$buyerId = $buyer['buyer_id'];
-		$productId = $id;	// $id is passed to this method by the routing system
-		// fetch logged in user's wishlist to pass quantity to the view
-		$wishlist = $this->wishlistModel->getByMultipleColumnValues([
-			'buyer_id' => $buyerId,
-			'product_id' => $productId,
-		]);
+		// initialise a default value, see elaboration below
+		$wishlistItemQuantity = 0;
+		if($buyer) {
+			$buyerId = $buyer['buyer_id'];
+			$productId = $id;	// $id is passed to this method by the routing system
+			// fetch logged in user's wishlist to pass quantity to the view
+			$wishlist = $this->wishlistModel->getByMultipleColumnValues([
+				'buyer_id' => $buyerId,
+				'product_id' => $productId,
+			]);
 
-		$wishlistItemQuantity = ($wishlist) ? $wishlist['quantity'] : 0;
+			$wishlistItemQuantity = ($wishlist) ? $wishlist['quantity'] : 0;
+		}
 
 		$this->setData([
 			'product' => $product,
@@ -121,6 +125,9 @@ class HomeController extends Controller {
 			'seller_rating' => $seller_rating,
 			'username' => $username,
 			'category' => $category,
+			// quantity
+			// 		0: item not in wishlist
+			// 		>0: item in the wishlist
 			'quantity' => $wishlistItemQuantity
 		]);
 		$this->render('single_product');

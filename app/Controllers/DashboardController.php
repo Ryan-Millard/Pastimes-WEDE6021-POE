@@ -24,6 +24,15 @@ class DashboardController extends Controller {
 	public function showDashboard() {
 		$userId = $_SESSION['user']['user_id'];
 		$buyer = $this->buyerModel->getByUserId($userId);
+		// User is a buyer
+		if($buyer) {
+			$this->showBuyerDashboard($buyer);
+			return;
+		}
+		$this->render('userDashboard');
+	}
+
+	private function showBuyerDashboard($buyer) {
 		$buyerId = $buyer['buyer_id'];
 
 		$wishlistProductsAndImages = $this->wishlistModel->getProductsAndImages($buyerId);
@@ -36,6 +45,7 @@ class DashboardController extends Controller {
 			'products' => $products,
 			'images' => $images,
 		] = $wishlistProductsAndImages;
+		$userType = null;
 		$this->setData([
 			'products' => $products,
 			'images' => $images,
@@ -43,6 +53,7 @@ class DashboardController extends Controller {
 			'productListHeading' => 'Wishlist',
 			'noProductFoundMessage' => 'There are no items in your wishlist.',
 			'containerId' => 'wishlist',
+			'userType' => 'buyer',
 		]);
 		$this->render('userDashboard');
 	}
