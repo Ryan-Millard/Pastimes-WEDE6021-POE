@@ -3,12 +3,18 @@
 </footer>
 
 <style>
-/* Footer */
+/* Main content area (for demo purposes) */
+.content {
+    flex: 1; /* Ensures the content area grows to fill available space */
+}
+
+/* Footer styles */
 footer {
     background-color: #333;
     color: #ffffff;
     padding: 20px 0;
     text-align: center;
+    margin-top: auto; /* This pushes the footer to the bottom of the page */
 }
 
 footer p {
@@ -23,5 +29,4 @@ footer a {
 footer a:hover {
     text-decoration: underline;
 }
-
 </style>
