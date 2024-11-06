@@ -29,6 +29,7 @@
 	use App\Models\ProductModel;
 	use App\Models\ProductImageModel;
 	use App\Models\WishlistModel;
+	use App\Models\MessageModel;
 
 	use \App\Middleware\AuthMiddleware;
 	use \App\Middleware\AdminMiddleware;
@@ -88,6 +89,7 @@
 			self::setModel('product', new ProductModel());
 			self::setModel('productImage', new ProductImageModel());
 			self::setModel('error404', null);
+			self::setModel('message', null);
 
 			// Initialize WishlistModel after product and productImage models
 			self::setModel('wishlist', new WishlistModel(self::getModel('productImage'), self::getModel('product')));
