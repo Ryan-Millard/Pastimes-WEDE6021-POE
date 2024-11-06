@@ -8,11 +8,11 @@
     </div>
     <strong>
         <?php if(empty($_SESSION['user']['username'])): ?>
-            <a class="light-emphasis btn <?php echo ($_SERVER['REQUEST_URI'] == '/pastimes/login') ? 'active' : ''; ?>" href="/pastimes/login">Log in</a>
+            <a class="light-emphasis <?php echo ($_SERVER['REQUEST_URI'] == '/pastimes/login') ? 'active' : ''; ?>" href="/pastimes/login">Log in</a>
         <?php else: ?>
-            <a class="light-emphasis btn <?php echo ($_SERVER['REQUEST_URI'] == '/pastimes/dashboard#wishlist') ? 'active' : ''; ?>" href="/pastimes/dashboard#wishlist">Wishlist</a>
-            <a class="light-emphasis btn <?php echo ($_SERVER['REQUEST_URI'] == '/pastimes/messages') ? 'active' : ''; ?>" href="/pastimes/messages">Messages</a>
-            <a class="light-emphasis btn <?php echo ($_SERVER['REQUEST_URI'] == '/pastimes/logout') ? 'active' : ''; ?>" href="/pastimes/logout">Log out</a>
+            <a class="light-emphasis <?php echo ($_SERVER['REQUEST_URI'] == '/pastimes/dashboard#wishlist') ? 'active' : ''; ?>" href="/pastimes/dashboard#wishlist">Wishlist</a>
+            <a class="light-emphasis <?php echo ($_SERVER['REQUEST_URI'] == '/pastimes/messages') ? 'active' : ''; ?>" href="/pastimes/messages">Messages</a>
+            <a class="light-emphasis <?php echo ($_SERVER['REQUEST_URI'] == '/pastimes/logout') ? 'active' : ''; ?>" href="/pastimes/logout">Log out</a>
         <?php endif; ?>
     </strong>
 </nav>

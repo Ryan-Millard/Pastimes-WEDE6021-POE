@@ -11,6 +11,7 @@ abstract class Model
 {
 	protected $conn;
 	protected $tableName;
+	protected $tablePrimaryKey;
 
 	public function __construct()
 	{
@@ -80,6 +81,37 @@ abstract class Model
 		return 0; // Return 0 if no rows were affected
 	}
 
+	// Delete records by multiple column values (for composite PK)
+	public function deleteByColumnsValues($conditions) {
+		try {
+			// Prepare the WHERE clause with multiple conditions (for composite PK)
+			$columns = implode(' AND ', array_map(function($key) {
+				return "$key = ?";
+			}, array_keys($conditions)));
+
+			// Prepare the SQL statement
+			$stmt = $this->conn->prepare("DELETE FROM {$this->tableName} WHERE {$columns}");
+
+			if (!$stmt) {
+				throw new Exception("Error preparing statement: " . $this->conn->error);
+			}
+
+			// Get the parameter types for the provided conditions
+			$types = $this->getParamTypes($conditions);
+			// Bind the values dynamically based on the conditions array
+			$stmt->bind_param($types, ...array_values($conditions));
+
+			if (!$stmt->execute()) {
+				throw new Exception("Error executing query: " . $stmt->error);
+			}
+
+			return $stmt->affected_rows; // Return the number of affected rows
+		} catch (Exception $e) {
+			echo $e->getMessage();
+		}
+
+		return 0; // Return 0 if no rows were affected
+	}
 
 	// Insert a new record into the table
 	// data is associative [], key => value is column => entry
@@ -124,7 +156,7 @@ abstract class Model
 		$types = $this->getParamTypes($data) . 'i';  // Add 'i' for the integer `id`
 
 		// prepare SQL statement
-		$stmt = $this->conn->prepare("UPDATE $this->tableName SET $fields WHERE id = ?");
+		$stmt = $this->conn->prepare("UPDATE $this->tableName SET $fields WHERE $this->tablePrimaryKey = ?");
 
 		if(!$stmt)
 			throw new Exception("Error preparing statement: " . $this->conn->error);
@@ -235,5 +267,58 @@ abstract class Model
 
 		return $fetchAll ? [] : null;  // Return an empty array or null based on the fetch type
 	}
-}
 
+	// Public function to get a single row by multiple column values
+	public function getByMultipleColumnValues($conditions)
+	{
+		return $this->fetchResultsByMultipleColumns($conditions, false); // Fetch a single row
+	}
+
+	// Public function to get multiple rows by multiple column values
+	public function getAllByMultipleColumnValues($conditions)
+	{
+		return $this->fetchResultsByMultipleColumns($conditions, true); // Fetch all rows
+	}
+
+	// Private helper function to fetch results by multiple columns
+	private function fetchResultsByMultipleColumns($conditions, $fetchAll = false)
+	{
+		try {
+			if (empty($this->tableName)) {
+				throw new Exception("Table name is not defined.");
+			}
+
+			// Prepare the WHERE clause with multiple conditions
+			$columns = implode(' AND ', array_map(function($key) {
+				return "$key = ?";
+			}, array_keys($conditions)));
+
+			// Prepare the SQL statement
+			$stmt = $this->conn->prepare("SELECT * FROM {$this->tableName} WHERE {$columns}");
+
+			if (!$stmt) {
+				throw new Exception("Error preparing statement: " . $this->conn->error);
+			}
+
+			// Get the parameter types
+			$types = $this->getParamTypes($conditions);
+			// Bind the values dynamically
+			$stmt->bind_param($types, ...array_values($conditions));
+
+			if (!$stmt->execute()) {
+				throw new Exception("Error executing statement: " . $stmt->error);
+			}
+
+			$result = $stmt->get_result();
+
+			if ($result->num_rows > 0) {
+				// Fetch all rows or just a single row based on the flag
+				return $fetchAll ? $result->fetch_all(MYSQLI_ASSOC) : $result->fetch_assoc();
+			}
+		} catch (Exception $e) {
+			echo $e->getMessage();
+		}
+
+		return $fetchAll ? [] : null; // Return an empty array or null based on the fetch type
+	}
+}

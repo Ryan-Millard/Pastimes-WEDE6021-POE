@@ -23,18 +23,27 @@ class DashboardController extends Controller {
 
 	public function showDashboard() {
 		$userId = $_SESSION['user']['user_id'];
-		$buyer = $this->buyerModel->getByColumnValue('user_id', $userId);
+		$buyer = $this->buyerModel->getByUserId($userId);
 		$buyerId = $buyer['buyer_id'];
 
-		$wishlistData = $this->wishlistModel->getProductsAndImages($buyerId);
+		$wishlistProductsAndImages = $this->wishlistModel->getProductsAndImages($buyerId);
+		$wishlistData = $this->wishlistModel->getAllByColumnValue('buyer_id', $buyerId);
 
-		['products' => $products, 'images' => $images] = $wishlistData;
+		$quantities = [];
+		foreach($wishlistData as $wishlist)
+			$quantities[] = $wishlist['quantity'];
+		[
+			'products' => $products,
+			'images' => $images,
+		] = $wishlistProductsAndImages;
 		$this->setData([
 			'products' => $products,
 			'images' => $images,
+			'quantities' => $quantities,
+			'productListHeading' => 'Wishlist',
 			'noProductFoundMessage' => 'There are no items in your wishlist.',
 			'containerId' => 'wishlist',
 		]);
-		$this->render('userDashboard', 'product_list');
+		$this->render('userDashboard');
 	}
 }

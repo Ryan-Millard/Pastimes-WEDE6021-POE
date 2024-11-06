@@ -1,228 +1,276 @@
-<?php if(!empty($product) && !empty($username)): ?>
-	<table border="1" cellpadding="10" cellspacing="0">
-		<tr>
-			<th>Product Name</th>
-			<td><?= htmlspecialchars($product['product_name']) ?></td>
-		</tr>
-		<tr>
-			<th>Condition</th>
-			<td><?= htmlspecialchars($product['product_condition']); ?></td>
-		</tr>
-		<tr>
-			<th>Price</th>
-			<td>R <?= htmlspecialchars($product['price']); ?></td>
-		</tr>
-		<tr>
-			<th>Image</th>
-			<td>
-				<img
-					class="custom-image"
-					src="/pastimes/images/products/<?= htmlspecialchars($image ? $image : 'default.jpg'); ?>"
-					alt="<?= htmlspecialchars($image); ?>"
-				>
-			</td>
-		</tr>
-		<tr>
-			<th>Category</th>
-			<td>
-				<div class="category-link-container">
-					<a class="category-link" href="/pastimes/categories/<?= $category['category_id'] ?>">
-						<?= htmlspecialchars($category['category_name']); ?>
-					</a>
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<th>Available Quantity</th>
-			<td><?= htmlspecialchars($product['quantity_available']); ?></td>
-		</tr>
-		<tr>
-			<th>Sold By</th>
-			<td><?= htmlspecialchars($username); ?></td>
-		</tr>
-		<tr>
-			<th>Seller Rating</th>
-			<td>
-				<?php if(!empty($seller_rating)): ?>
-					<?= htmlspecialchars($seller_rating); ?>/5
-				<?php else: ?>
-					<?= 'Not found' ?>
-				<?php endif; ?>
-			</td>
-		</tr>
-		<tr>
-			<th>Action</th>
-			<td>
-			<form action="/pastimes/products/<?= $product['product_id'] ?>" method="POST">
-					<input type="hidden" name="product_id" value="<?= htmlspecialchars($product['product_id']); ?>">
-
-					<div class="centered-content">
-						<label for="quantity">Quantity:</label>
+<?php if (!empty($product) && !empty($username)): ?>
+	<img
+		class="custom-image"
+		src="/pastimes/images/products/<?= htmlspecialchars($image ? $image : 'default.jpg'); ?>"
+		alt="<?= htmlspecialchars($image); ?>"
+	>
+    <table class="product-table">
+        <tr>
+            <th>Product Name</th>
+            <td><?= htmlspecialchars($product['product_name']) ?></td>
+        </tr>
+        <tr>
+            <th>Condition</th>
+            <td><?= htmlspecialchars($product['product_condition']); ?></td>
+        </tr>
+        <tr>
+            <th>Price</th>
+            <td>R <?= htmlspecialchars($product['price']); ?></td>
+        </tr>
+        <tr>
+            <th>Category</th>
+            <td>
+                <a class="category-link" href="/pastimes/categories/<?= $category['category_id'] ?>">
+                    <?= htmlspecialchars($category['category_name']); ?>
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <th>Available Quantity</th>
+            <td><?= htmlspecialchars($product['quantity_available']); ?></td>
+        </tr>
+        <tr>
+            <th>Sold By</th>
+            <td><?= htmlspecialchars($username); ?></td>
+        </tr>
+        <tr>
+            <th>Seller Rating</th>
+            <td>
+                <?php if (!empty($seller_rating)): ?>
+                    <?= htmlspecialchars($seller_rating); ?>/5
+                <?php else: ?>
+                    <?= 'Not found' ?>
+                <?php endif; ?>
+            </td>
+        </tr>
+        <tr>
+            <th>Action</th>
+            <td>
+                <div class="wishlist-actions">
+                    <form action="/pastimes/products/<?= $product['product_id'] ?>" method="POST">
+                        <input type="hidden" name="product_id" value="<?= htmlspecialchars($product['product_id']); ?>">
 						<div class="quantity-container">
 							<button type="button" class="quantity-btn" onclick="changeQuantity(-1)">-</button>
-							<input type="number" name="quantity" id="quantity" value="1" min="1" style="width: 50px; text-align: center;">
+							<input type="number" name="quantity" id="quantity" value="<?= $quantity ?>" min="1" style="width: 50px; text-align: center;">
 							<button type="button" class="quantity-btn" onclick="changeQuantity(1)">+</button>
+							<input type="hidden" name="action" value="add_to_wishlist">
+							<button class="btn add-to-wishlist" type="submit">Add</button>
 						</div>
+                    </form>
 
-						<button type="submit">Add to Wishlist</button>
-					</div>
-				</form>
-			</td>
-		</tr>
-	</table>
+				<!-- If the item exists in the wishlist (given by the wishlist quantity variable being truthy)-->
+                <?php if ($quantity): ?>
+						<form action="/pastimes/products/<?= $product['product_id'] ?>" method="POST">
+							<input type="hidden" name="product_id" value="<?= htmlspecialchars($product['product_id']); ?>">
+							<input type="hidden" name="action" value="remove_from_wishlist">
+							<button class="btn remove-from-wishlist" type="submit">Remove</button>
+						</form>
+                <?php endif; ?>
+                </div>
+            </td>
+        </tr>
+    </table>
 <?php else: ?>
-	<p>No product found.</p>
+    <p>No product found.</p>
 <?php endif; ?>
 
-<?php
-	// use the flash_message popup
-	require_once 'shared/flash_message.php';
-?>
+<?php require_once 'shared/flash_message.php'; ?>
 
 <script>
-const maxQuantity = <?= htmlspecialchars($product['quantity_available']); ?>; // Pass the available quantity to JavaScript
+    const maxQuantity = <?= htmlspecialchars($product['quantity_available']); ?>;
 
-function changeQuantity(amount) {
-    var quantityInput = document.getElementById('quantity');
-    var currentQuantity = parseInt(quantityInput.value);
-    var newQuantity = currentQuantity + amount;
+    function changeQuantity(amount) {
+        var quantityInput = document.getElementById('quantity');
+        var currentQuantity = parseInt(quantityInput.value);
+        var newQuantity = currentQuantity + amount;
 
-    // Ensure newQuantity is within the allowed limits
-    if (!isNaN(currentQuantity) && newQuantity >= 1 && newQuantity <= maxQuantity) {
-        quantityInput.value = newQuantity; // Update input value
+        if (!isNaN(currentQuantity) && newQuantity >= 1 && newQuantity <= maxQuantity) {
+            quantityInput.value = newQuantity;
+        }
     }
-}
 </script>
 
-
 <style>
-/* Style for the table */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px; /* Add space above the table */
-}
+    table.product-table {
+        width: 100%;
+        margin-top: 20px;
+        border-collapse: collapse;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+    }
 
-/* Style for table headers */
-th {
-    text-align: left;
-    background-color: #f2f2f2;
-    padding: 10px;
-    border-bottom: 2px solid #ddd; /* Adds a bottom border for separation */
-}
+    th, td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #e2e2e2;
+    }
 
-/* Style for table data cells */
-td {
-    padding: 10px;
-    border-bottom: 1px solid #ddd; /* Adds a bottom border to each row */
-}
+    th {
+        background-color: #f4f4f4;
+        font-size: 16px;
+        font-weight: 600;
+    }
 
-/* Hover effect for table rows */
-tr:hover {
-    background-color: #f9f9f9; /* Light grey background on hover */
-}
+    td {
+        font-size: 14px;
+    }
+
+    tr:hover {
+        background-color: #fafafa;
+    }
 
 /* Style for the custom image */
 .custom-image {
-    height: 200px;
+    height: 25em;
     width: auto; /* Maintain aspect ratio */
     max-width: 100%; /* Ensure it doesn't overflow */
+    margin: 0 auto; /* Centers the image horizontally */
+    display: block; /* Makes the image a block-level element */
+    object-fit: contain; /* Ensures the image fits within the container while maintaining aspect ratio */
 }
 
-/* Button styles */
-button {
-    background-color: #007bff; /* Bootstrap primary color */
-    color: white;
-    border: none;
-    padding: 10px 15px;
+    /* Category Link */
+    .category-link {
+        color: #007bff;
+        text-decoration: none;
+        font-weight: bold;
+        transition: color 0.3s ease;
+    }
+
+    .category-link:hover {
+        color: #0056b3;
+        text-decoration: underline;
+    }
+
+    /* Button Styles */
+    .btn {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        text-align: center;
+    }
+
+    .btn:hover {
+        background-color: #0056b3;
+    }
+
+    .btn.remove-from-wishlist {
+        background-color: #dc3545;
+    }
+
+    .btn.remove-from-wishlist:hover {
+        background-color: #c82333;
+    }
+
+    /* Quantity Input */
+    .quantity-container {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .quantity-btn {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 4px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .quantity-btn:hover {
+        background-color: #0056b3;
+    }
+
+    input[type="number"] {
+        width: 60px;
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        text-align: center;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        table.product-table {
+            font-size: 12px;
+        }
+
+        .quantity-container {
+            flex-direction: column;
+        }
+
+        .quantity-btn {
+            width: 100%;
+            padding: 10px;
+        }
+    }
+
+.wishlist-actions {
+	display: flex;
+}
+
+/* Action column styling */
+table.product-table td:last-child {
     text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px; /* Larger text for the button */
-    border-radius: 5px; /* Rounded corners */
-    cursor: pointer; /* Pointer cursor on hover */
-    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+    vertical-align: middle; /* Aligns buttons vertically */
 }
 
-/* Button hover effect */
-button:hover {
-    background-color: #0056b3; /* Darker shade on hover */
-}
-
-/* Responsive adjustments */
-@media (max-width: 600px) {
-    th, td {
-        padding: 8px; /* Slightly smaller padding for mobile */
-        font-size: 14px; /* Smaller text for mobile */
-    }
-
-    button {
-        width: 100%; /* Full-width button on mobile */
-    }
-}
-
-/* Style for the category name link */
-.category-link {
-    color: #007bff; /* Bootstrap primary color for links */
-    text-decoration: none; /* Remove underline */
-    font-weight: bold; /* Make the text bold */
-    transition: color 0.3s ease; /* Smooth transition for hover effect */
-}
-
-/* Hover effect for the category link */
-.category-link:hover {
-    color: #0056b3; /* Darker shade on hover */
-    text-decoration: underline; /* Underline on hover for emphasis */
-}
-
-/* Style for the category link container */
-.category-link-container {
-    display: inline-block; /* Align properly */
-    padding: 5px 10px; /* Add padding for better click area */
-    border-radius: 5px; /* Rounded corners for better aesthetics */
-    background-color: #DDDDDD; /* Light background for the link container */
-    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
-}
-
-/* Hover effect for the category link container */
-.category-link-container:hover {
-    background-color: #e2e6ea; /* Darker background on hover */
-}
-
-.quantity-container {
+.wishlist-actions {
     display: flex;
+    flex-direction: column; /* Stack the buttons vertically */
+    gap: 10px; /* Space between buttons */
+}
+
+.wishlist-actions form {
+    width: 100%;
+    display: flex;
+    justify-content: center; /* Center the buttons horizontally */
+}
+
+.wishlist-actions .btn {
+    width: auto; /* Set the width to auto for buttons */
+    padding: 10px 20px; /* Adjust button padding */
+    text-align: center;
+}
+
+/* Style for buttons in wishlist actions */
+.wishlist-actions button {
+    width: 100%; /* Make buttons span full width on smaller screens */
+    max-width: 200px; /* Limit the button width */
+    padding: 12px 20px;
+    text-align: center;
+}
+
+.wishlist-actions .quantity-container {
+    display: flex;
+    gap: 10px;
     align-items: center;
-	margin-bottom: 5px;
+    justify-content: center; /* Center quantity controls horizontally */
 }
 
-.quantity-btn {
-    background-color: #007bff; /* Bootstrap primary color */
-    color: white;
-    border: none;
-    padding: 4px 9px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px; /* Larger text for the button */
-    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+/* Responsive Design */
+@media (max-width: 768px) {
+    .wishlist-actions {
+        flex-direction: column; /* Stack buttons vertically */
+    }
+
+    .wishlist-actions button {
+        width: 100%; /* Full width on mobile */
+    }
 }
 
-.quantity-btn:hover {
-    background-color: #0056b3; /* Darker shade on hover */
-}
-
-input[type="number"] {
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 5px;
-    margin: 0 5px; /* Add space between buttons and input */
-}
-
-.centered-content {
-    display: flex; /* Enables Flexbox layout */
-    flex-direction: column; /* Arranges children in a column */
-    align-items: center; /* Centers children horizontally */
-    justify-content: center; /* Centers children vertically */
-	width: fit-content;
+body {
+    background-color: #f8f8f8;
+    color: #333;
+    font-size: 16px;
+    line-height: 1.6;
+	margin: 2%;
 }
 </style>
 

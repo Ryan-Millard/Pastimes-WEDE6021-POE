@@ -22,7 +22,7 @@ $routes = [
 	['get', PASTIMES_BASE, [$controller('home'), 'index']],
 	['get', PASTIMES_BASE . '/home', [$controller('home'), 'index']],
 	['get', PASTIMES_BASE . '/products/{id}', [$controller('home'), 'showProductById']],
-	['post', PASTIMES_BASE . '/products/{id}', [$controller('home'), 'addToWishlist']],
+	['post', PASTIMES_BASE . '/products/{id}', [$controller('home'), 'handleWishlistPost']],
 	['get', PASTIMES_BASE . '/categories', [$controller('category'), 'showAll']],
 	['get', PASTIMES_BASE . '/categories/{id}', [$controller('category'), 'showById']],
 	['get', PASTIMES_BASE . '/signup', [$controller('user'), 'showSignUpForm']],

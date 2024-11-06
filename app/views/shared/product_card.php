@@ -19,6 +19,11 @@
 						htmlspecialchars($product['product_name'])
 			?>
 			(<?= htmlspecialchars($product['product_condition']); ?>)
+
+			<?php if($quantity): ?>
+			<p>Quantity: <?= $quantity ?></p>
+			<?php endif; ?>
+
 			<p class="product-price">R <?= htmlspecialchars($product['price']); ?></p>
 		</p>
 	</div>

@@ -17,6 +17,7 @@ class WishlistModel extends Model {
 	public function __construct(ProductImageModel $productImageModel = null, ProductModel $productModel = null) {
 		parent::__construct();
 		$this->tableName = 'Wishlist';
+		$this->tablePrimaryKey = 'wishlist_item_id';
 
 		$this->productImageModel = $productImageModel;
 		$this->productModel = $productModel;
@@ -47,6 +48,29 @@ class WishlistModel extends Model {
 
 		// If it doesn't exist, call the parent insert method
 		return parent::insert($data);
+	}
+
+	// In WishlistModel class
+	// Return values:
+	// 		0: Failed to insert or update record
+	// 		1: Succeeded in inserting new record
+	// 		2: Succeeded in updating record
+	public function insertOrUpdate($data) {
+		// Check if the entry already exists
+		$existingEntry = $this->getAllByColumnValue('buyer_id', $data['buyer_id']);
+		foreach($existingEntry as $entry) {
+			// If entry exists for the same product and buyer, update the quantity
+			if ($entry['buyer_id'] === $data['buyer_id'] && $entry['product_id'] === $data['product_id']) {
+				// Update the quantity (increment or set)
+				$newQuantity = $data['quantity'];  // or simply set if you don't want to accumulate
+				$successfulUpdate = $this->update($entry[$this->tablePrimaryKey], ['quantity' => $newQuantity]);
+
+				return ($successfulUpdate) ? 2 : 0;
+			}
+		}
+
+		// If no existing entry, insert a new one
+		return $this->insert($data) ? 1 : 0;
 	}
 
 	public function getProductsAndImages($buyerId) {

@@ -15,6 +15,10 @@
 					$product = $products[$i];
 					$image = !empty($images[$i]) ? $images[$i] : 'default.jpg';
 
+					$quantity = 0;
+					if(isset($quantities))
+						$quantity = $quantities[$i];
+
 					include __DIR__ . '/shared/product_card.php';
 				?>
 			<?php endfor; ?>

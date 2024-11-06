@@ -64,6 +64,9 @@ class HomeController extends Controller {
 	}
 
 	public function showProductById($id) {
+		// ----------------------------------------------------------------------------------------
+		// STEP 1: Fetch seller and product data
+		// ----------------------------------------------------------------------------------------
 		// set default values in case there is no product with arg's id value
 		$product = '';
 		$seller_rating = '';
@@ -80,9 +83,9 @@ class HomeController extends Controller {
 			// retrieve seller's rating
 			$seller_rating = $seller['seller_rating'];
 
-			// fetch user data
+			// fetch Seller's data
 			$user = $this->userModel->getByColumnValue('user_id', $seller['user_id']);
-			// set username
+			// set seller's username
 			$username = $user['username'];
 
 			// fetch user, category and product image using respective IDs
@@ -96,15 +99,45 @@ class HomeController extends Controller {
 				$image = $this->productImageModel->getImageByName($productImage['product_image_url']);
 			}
 		}
+		// ----------------------------------------------------------------------------------------
+		// STEP 2: Fetch buyer data and quantity in wishlist (if in wishlist)
+		// ----------------------------------------------------------------------------------------
+
+		// fetch the details of the user that is currently logged in
+		$buyer = $this->buyerModel->getByUserId($_SESSION['user']['user_id']);
+		$buyerId = $buyer['buyer_id'];
+		$productId = $id;	// $id is passed to this method by the routing system
+		// fetch logged in user's wishlist to pass quantity to the view
+		$wishlist = $this->wishlistModel->getByMultipleColumnValues([
+			'buyer_id' => $buyerId,
+			'product_id' => $productId,
+		]);
+
+		$wishlistItemQuantity = ($wishlist) ? $wishlist['quantity'] : 0;
 
 		$this->setData([
 			'product' => $product,
 			'image' => $image,
 			'seller_rating' => $seller_rating,
 			'username' => $username,
-			'category' => $category
+			'category' => $category,
+			'quantity' => $wishlistItemQuantity
 		]);
 		$this->render('single_product');
+	}
+
+	public function handleWishlistPost() {
+		if($_POST['action'] === 'add_to_wishlist') {
+			$this->addToWishlist();
+			return;
+		}
+		elseif($_POST['action'] === 'remove_from_wishlist') {
+			$this->deleteFromWishlist();
+			return;
+		}
+
+		$_SESSION['flash_message'] = 'Hello';
+		$this->redirect('/pastimes/products/' . $_POST['product_id']);
 	}
 
 	public function addToWishlist() {
@@ -113,22 +146,41 @@ class HomeController extends Controller {
 		['user_id' => $userId] = $_SESSION['user'];
 		['buyer_id' => $buyerId] = $this->buyerModel->getByColumnValue('user_id', $userId);
 
-		$result = false;
-		try {
-			$insertData = [
-				'buyer_id' => $buyerId,
-				'product_id' => (int) $productId,
-				'quantity' => $productQuantity,
-			];
-			$result = $this->wishlistModel->insert($insertData);
-		} catch(\Exception $e) {
-			echo 'Error: ' . $e->getMessage();
-			$flash_message = 'An error occurred. Please try again in a few minutes';
+		$result = $this->wishlistModel->insertOrUpdate([
+			'buyer_id' => $buyerId,
+			'product_id' => (int) $productId,
+			'quantity' => $productQuantity,
+		]);
+
+		switch($result) {
+			case 1:
+				$flash_message = 'Added to Wishlist';
+				break;
+			case 2:
+				$flash_message = 'Quantity updated in Wishlist';
+				break;
+			default:
+				$flash_message = 'An error occurred. Please try again in a few minutes';
 		}
 
-		if(!isset($flash_message))
-			$flash_message = ($result) ? 'Added to Wishlist' : 'This item is already in your wishlist';
 		$_SESSION['flash_message'] = $flash_message;
+		$this->redirect('/pastimes/products/' . $_POST['product_id']);
+	}
+
+	public function deleteFromWishlist() {
+		$productId = (int) $_POST['product_id'];
+		['user_id' => $userId] = $_SESSION['user'];
+		['buyer_id' => $buyerId] = $this->buyerModel->getByColumnValue('user_id', $userId);
+
+		$result = $this->wishlistModel->deleteByColumnsValues([
+			'product_id' => $productId,
+			'buyer_id' => $buyerId
+		]);
+
+		$_SESSION['flash_message'] = ($result) ? 
+			'The item has been successfully removed from your wishlist'
+			:
+			'An error occurred. Please try again in a few minutes';
 		$this->redirect('/pastimes/products/' . $_POST['product_id']);
 	}
 }
