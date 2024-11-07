@@ -125,6 +125,7 @@ class HomeController extends Controller {
 			'seller_rating' => $seller_rating,
 			'username' => $username,
 			'category' => $category,
+			'user_is_buyer' => ($buyer) ? true : false,
 			// quantity
 			// 		0: item not in wishlist
 			// 		>0: item in the wishlist

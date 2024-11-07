@@ -43,32 +43,34 @@
                 <?php endif; ?>
             </td>
         </tr>
-        <tr>
-            <th>Action</th>
-            <td>
-                <div class="wishlist-actions">
-                    <form action="/pastimes/products/<?= $product['product_id'] ?>" method="POST">
-                        <input type="hidden" name="product_id" value="<?= htmlspecialchars($product['product_id']); ?>">
-						<div class="quantity-container">
-							<button type="button" class="quantity-btn" onclick="changeQuantity(-1)">-</button>
-							<input type="number" name="quantity" id="quantity" value="<?= $quantity ?>" min="1" style="width: 50px; text-align: center;">
-							<button type="button" class="quantity-btn" onclick="changeQuantity(1)">+</button>
-							<input type="hidden" name="action" value="add_to_wishlist">
-							<button class="btn add-to-wishlist" type="submit">Add</button>
-						</div>
-                    </form>
-
-				<!-- If the item exists in the wishlist (given by the wishlist quantity variable being truthy)-->
-                <?php if ($quantity): ?>
+		<?php if ($user_is_buyer): ?>
+			<tr>
+				<th>Action</th>
+				<td>
+					<div class="wishlist-actions">
 						<form action="/pastimes/products/<?= $product['product_id'] ?>" method="POST">
 							<input type="hidden" name="product_id" value="<?= htmlspecialchars($product['product_id']); ?>">
-							<input type="hidden" name="action" value="remove_from_wishlist">
-							<button class="btn remove-from-wishlist" type="submit">Remove</button>
+							<div class="quantity-container">
+								<button type="button" class="quantity-btn" onclick="changeQuantity(-1)">-</button>
+								<input type="number" name="quantity" id="quantity" value="<?= $quantity ?>" min="1" style="width: 50px; text-align: center;">
+								<button type="button" class="quantity-btn" onclick="changeQuantity(1)">+</button>
+								<input type="hidden" name="action" value="add_to_wishlist">
+								<button class="btn add-to-wishlist" type="submit">Add</button>
+							</div>
 						</form>
-                <?php endif; ?>
-                </div>
-            </td>
-        </tr>
+
+					<!-- If the item exists in the wishlist (given by the wishlist quantity variable being truthy)-->
+					<?php if ($quantity): ?>
+							<form action="/pastimes/products/<?= $product['product_id'] ?>" method="POST">
+								<input type="hidden" name="product_id" value="<?= htmlspecialchars($product['product_id']); ?>">
+								<input type="hidden" name="action" value="remove_from_wishlist">
+								<button class="btn remove-from-wishlist" type="submit">Remove</button>
+							</form>
+					<?php endif; ?>
+					</div>
+				</td>
+			</tr>
+		<?php endif; ?>
     </table>
 <?php else: ?>
     <p>No product found.</p>
