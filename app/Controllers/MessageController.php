@@ -31,12 +31,14 @@ class MessageController extends Controller {
 			if ($senderId == $userId) {
 				$otherUserId = $receiverId;
 			}
+			echo $otherUserId . '<br />';
 
 			// Fetch the other user's name using getById
 			$otherUser = $this->userModel->getById($otherUserId);
 
 			// Add the other user's name to the message array
 			$latestMessagesInConversation[$key]['other_user_name'] = $otherUser['username'];
+			$latestMessagesInConversation[$key]['other_user_id'] = $otherUser['user_id'];
 		}
 
 		$this->setData([
@@ -50,6 +52,11 @@ class MessageController extends Controller {
 		$currentUserId = (int)$_SESSION['user']['user_id'];
 		$conversation = $this->messageModel->getConversationBetweenUsers($currentUserId, $externalUserId);
 		$externalUser = $this->userModel->getById($externalUserId);
+
+		foreach($conversation as $message) {
+			if($message['receiver_id'] === $currentUserId)
+				$this->messageModel->updateSeenAt($message['message_id']);
+		}
 
 		$this->setData([
 			'conversation' =>$conversation,

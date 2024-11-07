@@ -1,18 +1,19 @@
 <div class="message-container">
     <h1>Contacts</h1>
     <?php foreach($messages as $message): ?>
-        <a href="/pastimes/messages/<?= htmlspecialchars($message['sender_id']); ?>">
-            <div class="contact">
+        <a href="/pastimes/messages/<?= htmlspecialchars($message['other_user_id']); ?>">
+			<?php
+				$messageColorClass = '';
+				if($userId === (int)$message['receiver_id'] && empty($message['seen_at']))
+					$messageColorClass = 'unread';
+			?>
+
+            <div class="contact <?= htmlspecialchars($messageColorClass); ?>">
                 <img src="https://via.placeholder.com/40" alt="contact1">
                 <div class="entry-holder">
                     <div class="contact-name"><?= htmlspecialchars($message['other_user_name']); ?></div>
 
-                    <?php
-                        $messageColorClass = '';
-                        if($userId === (int)$message['receiver_id'] && empty($message['seen_at']))
-                            $messageColorClass = 'unread';
-                    ?>
-                    <div class="contact-last-message <?= htmlspecialchars($messageColorClass); ?>">
+                    <div class="contact-last-message">
                         <?= htmlspecialchars($message['message']); ?>
                     </div>
                 </div>
@@ -84,7 +85,7 @@
 }
 
 .unread {
-    color: red;
+background-color: #CCE0FF;
     font-weight: bold;
 }
 

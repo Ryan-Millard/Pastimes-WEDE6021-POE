@@ -102,4 +102,31 @@ class MessageModel extends Model {
 
 		return [];  // Return an empty array in case of error
 	}
+
+	public function updateSeenAt($messageId) {
+		try {
+			$currentTimestamp = date('Y-m-d H:i:s');
+
+			$query = "UPDATE Messages SET seen_at = ?, seen = 1 WHERE message_id = ?";
+
+			$stmt = $this->conn->prepare($query);
+
+			if ($stmt === false) {
+				throw new Exception("Error preparing statement: " . $this->conn->error);
+			}
+
+			$stmt->bind_param('si', $currentTimestamp, $messageId);
+
+			if (!$stmt->execute()) {
+				throw new Exception("Error executing query: " . $stmt->error);
+			}
+
+			return $stmt->affected_rows;
+
+		} catch (Exception $e) {
+			echo $e->getMessage();
+		}
+
+		return 0;  // Return 0 if no rows were affected or if there was an error
+	}
 }

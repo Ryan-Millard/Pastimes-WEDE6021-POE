@@ -10,7 +10,7 @@
             <div class="message-info">
                 <span><?= $message['sent_at'] ?></span>
                 <?php if ($message['seen']): ?>
-                    <span> | Seen at: <?= $message['seen_at'] ?></span>
+                    <span> | Seen</span>
                 <?php endif; ?>
             </div>
         </div>
