@@ -1,8 +1,12 @@
+<?php
+	$userRoles = $_SESSION['user']['user_roles'];
+?>
+
 <nav class="navbar">
     <h2>Pastimes</h2>
     <div class="nav-links">
         <a href="/pastimes/" class="<?php echo ($_SERVER['REQUEST_URI'] == '/pastimes/') ? 'active' : ''; ?>">Home</a>
-        <a href="/pastimes/categories" class="<?php echo ($_SERVER['REQUEST_URI'] == '/pastimes/categories') ? 'active' : ''; ?>">Categories</a>
+        <a href="/pastimes/categories" class="<?php echo ($_SERVER['REQUEST_URI'] == '/pastimes/categories') ? 'active' : ''; ?>">Shop</a>
         <a href="/pastimes/dashboard" class="<?php echo ($_SERVER['REQUEST_URI'] == '/pastimes/dashboard') ? 'active' : ''; ?>">My Dashboard</a>
         <a href="/pastimes/admin" class="<?php echo ($_SERVER['REQUEST_URI'] == '/pastimes/admin') ? 'active' : ''; ?>">Admin Panel</a>
     </div>
@@ -10,7 +14,11 @@
         <?php if(empty($_SESSION['user']['username'])): ?>
             <a class="light-emphasis <?php echo ($_SERVER['REQUEST_URI'] == '/pastimes/login') ? 'active' : ''; ?>" href="/pastimes/login">Log in</a>
         <?php else: ?>
-            <a class="light-emphasis <?php echo ($_SERVER['REQUEST_URI'] == '/pastimes/dashboard#wishlist') ? 'active' : ''; ?>" href="/pastimes/dashboard#wishlist">Wishlist</a>
+			<?php if(in_array('buyer', $userRoles)): ?>
+				<a class="light-emphasis <?php echo ($_SERVER['REQUEST_URI'] == '/pastimes/dashboard') ? 'active' : ''; ?>" href="/pastimes/dashboard#wishlist">Wishlist</a>
+			<?php elseif(in_array('seller', $userRoles)): ?>
+				<a class="light-emphasis <?php echo ($_SERVER['REQUEST_URI'] == '/pastimes/dashboard') ? 'active' : ''; ?>" href="/pastimes/dashboard#soldItems">My Listings</a>
+			<?php endif; ?>
             <a class="light-emphasis <?php echo ($_SERVER['REQUEST_URI'] == '/pastimes/messages') ? 'active' : ''; ?>" href="/pastimes/messages">Messages</a>
             <a class="light-emphasis <?php echo ($_SERVER['REQUEST_URI'] == '/pastimes/logout') ? 'active' : ''; ?>" href="/pastimes/logout">Log out</a>
         <?php endif; ?>

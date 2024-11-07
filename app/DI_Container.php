@@ -76,7 +76,7 @@
 		private static function initControllers() {
 			self::setController('home', new HomeController(self::getModel('product'), self::getModel('productImage'), self::getModel('seller'), self::getModel('user'), self::getModel('category'), self::getModel('buyer'), self::getModel('wishlist')));
 			self::setController('category', new CategoryController(self::getModel('product'), self::getModel('productImage'), self::getModel('seller'), self::getModel('user'), self::getModel('category')));
-			self::setController('user', new UserController(self::getModel('user')));
+			self::setController('user', new UserController(self::getModel('user'), self::getModel('seller'), self::getModel('buyer')));
 			self::setController('dashboard', new DashboardController(self::getModel('wishlist'), self::getModel('buyer'), self::getModel('seller')));
 			self::setController('admin', new AdminController(self::getModel('admin'), self::getModel('user'), self::getModel('buyer'), self::getModel('seller')));
 			self::setController('product', new ProductController(self::getModel('product')));

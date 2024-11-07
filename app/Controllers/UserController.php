@@ -2,15 +2,26 @@
 
 namespace App\Controllers;
 
+require_once __DIR__ . './../models/Model.php';
 require_once __DIR__ . './../models/UserModel.php';
 require_once __DIR__ . '/Controller.php';
 
 use App\Models\UserModel;
+use App\Models\Model;
 use App\Controllers\Controller;
 
 class UserController extends Controller {
-	public function __construct(UserModel $model = null) {
-		parent::__construct($model);
+	protected $userModel;
+	public function __construct(
+		UserModel $userModel,
+		Model $sellerModel,
+		Model $buyerModel,
+	) {
+		parent::__construct();
+
+		$this->userModel = $userModel;
+		$this->sellerModel = $sellerModel;
+		$this->buyerModel = $buyerModel;
 	}
 
 	public function showLoginForm() {
@@ -25,7 +36,7 @@ class UserController extends Controller {
 		$username = htmlspecialchars(trim($_POST['username']));
 		$password = htmlspecialchars(trim($_POST['password']));
 
-		$unapprovedUsers = $this->model->getUnapprovedUsers();
+		$unapprovedUsers = $this->userModel->getUnapprovedUsers();
 		foreach($unapprovedUsers as $unapprovedUser) {
 			// different username
 			if($username !== $unapprovedUser['username'])
@@ -33,16 +44,26 @@ class UserController extends Controller {
 			if(!password_verify($password, $unapprovedUser['password_hash']))
 				continue;
 
-			if($this->model->login($username, $password)) {
+			if($this->userModel->login($username, $password)) {
 				$_SESSION['flash_message'] = 'Your account is still under review. Please be patient.';
 				$this->redirect('/pastimes');
 			}
 		}
 
 		// Attempt login
-		$user = $this->model->login($username, $password);
+		$user = $this->userModel->login($username, $password);
 
 		if($user) {
+			$userId = $user['user_id'];
+
+			// Fetch user roles
+			$userRoles = [];
+			if($this->buyerModel->getByUserId($userId))
+				$userRoles[] = 'buyer';
+			if($this->sellerModel->getByUserId($userId))
+				$userRoles[] = 'seller';
+			$user['user_roles'] = $userRoles;
+
 			// Start session and redirect to dashboard
 			// session_start();
 			$_SESSION['user'] = $user;
@@ -106,7 +127,7 @@ class UserController extends Controller {
 		];
 
 		try {
-			$this->model->insert($dataForInsert);
+			$this->userModel->insert($dataForInsert);
 		} catch(\Exception $e) {
 			echo "An error has occurred: " . $e->getMessage() . '<br />';
 		}
@@ -127,7 +148,7 @@ class UserController extends Controller {
 	// Validate username
 	public function validateUsername($username) {
 		$username = htmlspecialchars(trim($username), ENT_QUOTES, 'UTF-8');
-		$userNameTaken = (bool)$this->model->getByColumnValue('username', $username);
+		$userNameTaken = (bool)$this->userModel->getByColumnValue('username', $username);
 		if($userNameTaken)
 			return "Username has already been taken. Please try another one.";
 		if (empty($username) || !ctype_alnum($username)) {
