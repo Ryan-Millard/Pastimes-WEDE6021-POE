@@ -9,9 +9,12 @@
 	require_once __DIR__ . '/Controllers/AdminController.php';
 	require_once __DIR__ . '/Controllers/Error404Controller.php';
 	require_once __DIR__ . '/Controllers/ProductController.php';
+	require_once __DIR__ . '/Controllers/MessageController.php';
 
 	require_once '../app/Middleware/AuthMiddleware.php';
 	require_once '../app/Middleware/AdminMiddleware.php';
+
+	require_once 'Models/MessageModel.php';
 
 	use \App\Controllers\HomeController;
 	use \App\Controllers\UserController;
@@ -20,6 +23,7 @@
 	use \App\Controllers\AdminController;
 	use \App\Controllers\Error404Controller;
 	use \App\Controllers\ProductController;
+	use \App\Controllers\MessageController;
 
 	use \App\Models\CategoryModel;
 	use \App\Models\UserModel;
@@ -76,6 +80,7 @@
 			self::setController('dashboard', new DashboardController(self::getModel('wishlist'), self::getModel('buyer')));
 			self::setController('admin', new AdminController(self::getModel('admin'), self::getModel('user'), self::getModel('buyer'), self::getModel('seller')));
 			self::setController('product', new ProductController(self::getModel('product')));
+			self::setController('message', new MessageController(self::getModel('message'), self::getModel('user')));
 			self::setController('error404', new Error404Controller(self::getModel('error404')));
 		}
 
@@ -89,7 +94,7 @@
 			self::setModel('product', new ProductModel());
 			self::setModel('productImage', new ProductImageModel());
 			self::setModel('error404', null);
-			self::setModel('message', null);
+			self::setModel('message', new MessageModel());
 
 			// Initialize WishlistModel after product and productImage models
 			self::setModel('wishlist', new WishlistModel(self::getModel('productImage'), self::getModel('product')));

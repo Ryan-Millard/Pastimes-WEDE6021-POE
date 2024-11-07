@@ -4,8 +4,6 @@
 
 <?php if (isset($userType) && $userType === 'buyer'): ?>
 	<?php require __DIR__ . '/product_list.php'; ?>
-<?php else: ?>
-    <p>You are not a Buyer.</p>
 <?php endif; ?>
 
 

@@ -33,7 +33,10 @@ $routes = [
 	['get', PASTIMES_BASE . '/admin', [$controller('admin'), 'showDashboard']],
 	['get', PASTIMES_BASE . '/admin/users/{id}', [$controller('admin'), 'showUserById']],
 	['post', PASTIMES_BASE . '/admin/users/{id}', [$controller('admin'), 'moderateUser']],
-	['get', PASTIMES_BASE . '/dashboard', [$controller('dashboard'), 'showDashboard']]
+	['get', PASTIMES_BASE . '/dashboard', [$controller('dashboard'), 'showDashboard']],
+	['get', PASTIMES_BASE . '/messages', [$controller('message'), 'showAll']],
+	['get', PASTIMES_BASE . '/messages/{id}', [$controller('message'), 'getConversation']],
+	['post', PASTIMES_BASE . '/messages/send', [$controller('message'), 'sendMessage']]
 ];
 
 // Register routes

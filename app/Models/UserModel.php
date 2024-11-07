@@ -59,4 +59,8 @@ class UserModel extends Model {
 			return []; // Return empty array on exception
 		}
 	}
+
+	public function getById($userId) {
+		return $this->getByColumnValue('user_id', $userId);
+	}
 }
