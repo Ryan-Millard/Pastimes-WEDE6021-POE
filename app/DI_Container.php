@@ -77,7 +77,7 @@
 			self::setController('home', new HomeController(self::getModel('product'), self::getModel('productImage'), self::getModel('seller'), self::getModel('user'), self::getModel('category'), self::getModel('buyer'), self::getModel('wishlist')));
 			self::setController('category', new CategoryController(self::getModel('product'), self::getModel('productImage'), self::getModel('seller'), self::getModel('user'), self::getModel('category')));
 			self::setController('user', new UserController(self::getModel('user')));
-			self::setController('dashboard', new DashboardController(self::getModel('wishlist'), self::getModel('buyer')));
+			self::setController('dashboard', new DashboardController(self::getModel('wishlist'), self::getModel('buyer'), self::getModel('seller')));
 			self::setController('admin', new AdminController(self::getModel('admin'), self::getModel('user'), self::getModel('buyer'), self::getModel('seller')));
 			self::setController('product', new ProductController(self::getModel('product')));
 			self::setController('message', new MessageController(self::getModel('message'), self::getModel('user')));
@@ -90,10 +90,10 @@
 			self::setModel('user', new UserModel());
 			self::setModel('admin', new AdminModel());
 			self::setModel('buyer', new BuyerModel());
-			self::setModel('seller', new SellerModel());
 			self::setModel('product', new ProductModel());
 			self::setModel('productImage', new ProductImageModel());
 			self::setModel('error404', null);
+			self::setModel('seller', new SellerModel(self::getModel('product'), self::getModel('productImage')));
 			self::setModel('message', new MessageModel());
 
 			// Initialize WishlistModel after product and productImage models
