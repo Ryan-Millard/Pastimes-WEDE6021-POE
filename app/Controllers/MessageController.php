@@ -22,6 +22,15 @@ class MessageController extends Controller {
 	public function showAll() {
 		$userId = (int)$_SESSION['user']['user_id'];
 		$latestMessagesInConversation = $this->messageModel->getLatestMessagesByUserId($userId);
+
+		if(!$latestMessagesInConversation) {
+			$this->setData([
+				'no_messages' => true,
+			]);
+			$this->render('message_list');
+			return;
+		}
+
 		foreach ($latestMessagesInConversation as $key => $message) {
 			$senderId = $message['sender_id'];
 			$receiverId = $message['receiver_id'];

@@ -1,27 +1,31 @@
-<div class="message-container">
-    <h1>Contacts</h1>
-    <?php foreach($messages as $message): ?>
-        <a href="/pastimes/messages/<?= htmlspecialchars($message['other_user_id']); ?>">
-			<?php
-				$messageColorClass = '';
-				if($userId === (int)$message['receiver_id'] && empty($message['seen_at']))
-					$messageColorClass = 'unread';
-			?>
+<h1 class="my-h1">Messages</h1>
+<?php if($no_messages): ?>
+	<p>Your inbox is empty.</p>
+<?php else: ?>
+	<div class="message-container">
+		<?php foreach($messages as $message): ?>
+			<a href="/pastimes/messages/<?= htmlspecialchars($message['other_user_id']); ?>">
+				<?php
+					$messageColorClass = '';
+					if($userId === (int)$message['receiver_id'] && empty($message['seen_at']))
+						$messageColorClass = 'unread';
+				?>
 
-            <div class="contact <?= htmlspecialchars($messageColorClass); ?>">
-                <img src="https://via.placeholder.com/40" alt="contact1">
-                <div class="entry-holder">
-                    <div class="contact-name"><?= htmlspecialchars($message['other_user_name']); ?></div>
+				<div class="contact <?= htmlspecialchars($messageColorClass); ?>">
+					<img src="https://via.placeholder.com/40" alt="contact1">
+					<div class="entry-holder">
+						<div class="contact-name"><?= htmlspecialchars($message['other_user_name']); ?></div>
 
-                    <div class="contact-last-message">
-                        <?= htmlspecialchars($message['message']); ?>
-                    </div>
-                </div>
-                <div class="contact-time"><?= $message['sent_at']; ?></div>
-            </div>
-        </a>
-    <?php endforeach; ?>
-</div>
+						<div class="contact-last-message">
+							<?= htmlspecialchars($message['message']); ?>
+						</div>
+					</div>
+					<div class="contact-time"><?= $message['sent_at']; ?></div>
+				</div>
+			</a>
+		<?php endforeach; ?>
+	</div>
+<?php endif; ?>
 
 <style>
 .message-container {
@@ -33,7 +37,7 @@
 	}
 }
 
-.message-container h1 {
+.my-h1 {
     text-align: center;
     margin-bottom: 20px;
     font-size: 2rem;
