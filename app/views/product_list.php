@@ -31,3 +31,11 @@
 		<p>No products found.</p>
 	<?php endif; ?>
 </div>
+
+<style>
+.flex-evenly {
+	display: flex;
+	justify-content: space-evenly;
+    flex-wrap: wrap;
+}
+</style>

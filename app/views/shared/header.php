@@ -1,5 +1,7 @@
 <?php
-	$userRoles = $_SESSION['user']['user_roles'];
+	$userRoles = [];
+	if(!empty($_SESSION['user']))
+		$userRoles = $_SESSION['user']['user_roles'];
 ?>
 
 <nav class="navbar">

@@ -5,6 +5,7 @@
 <?php if (isset($userType) && $userType === 'buyer'): ?>
 	<?php require __DIR__ . '/product_list.php'; ?>
 <?php elseif (isset($userType) && $userType === 'seller'): ?>
+	<?php require __DIR__ . '/new_listing.php'; ?>
 	<?php require __DIR__ . '/product_list.php'; ?>
 <?php endif; ?>
 

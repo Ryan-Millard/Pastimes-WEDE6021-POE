@@ -40,7 +40,6 @@ class MessageController extends Controller {
 			if ($senderId == $userId) {
 				$otherUserId = $receiverId;
 			}
-			echo $otherUserId . '<br />';
 
 			// Fetch the other user's name using getById
 			$otherUser = $this->userModel->getById($otherUserId);

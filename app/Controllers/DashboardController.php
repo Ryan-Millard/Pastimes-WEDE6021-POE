@@ -87,7 +87,7 @@ class DashboardController extends Controller {
 			'products' => $products,
 			'images' => $images,
 			'quantities' => $quantities,
-			'productListHeading' => "Items you're selling",
+			'productListHeading' => 'My Listings',
 			'noProductFoundMessage' => "You aren't selling anything.",
 			'containerId' => 'soldItems',
 			'userType' => 'seller',
