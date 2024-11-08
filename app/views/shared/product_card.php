@@ -1,4 +1,7 @@
-<a href="/pastimes/products/<?= htmlspecialchars($product['product_id']); ?>" class="product-link">
+<a
+	href="/pastimes/products/<?= htmlspecialchars($product['product_id']); ?>"
+	class="product-link"
+>
 	<div>
 		<?php if(!empty($image)): ?>
 			<img

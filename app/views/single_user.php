@@ -89,7 +89,7 @@ th, td {
 }
 
 th {
-    background-color: #5BC0DE;
+    background-color: #999999;
     color: white;
 }
 
@@ -123,7 +123,7 @@ select {
 button {
     padding: 10px 20px;
     color: white;
-    background-color: #4CAF50;
+    background-color: #5BC0DE;
     border: none;
     border-radius: 5px;
     cursor: pointer;

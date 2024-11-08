@@ -1,9 +1,9 @@
-<div class="container" id="<?= $containerId ?>">
+<div class="container" id="<?= $containerId ?? '' ?>">
 	<div class="centered-text">
 		<?php if(!empty($productListHeading)): ?>
 			<h1><?= htmlspecialchars($productListHeading); ?></h1>
 
-		<?php else: ?>
+		<?php elseif(!isset($noProductListHeading)): ?>
 			<h1>Products</h1>
 		<?php endif; ?>
 	</div>
@@ -28,7 +28,7 @@
 		<p class="text-center"><?= htmlspecialchars($noProductFoundMessage); ?></p>
 
 	<?php else: ?>
-		<p>No products found.</p>
+		<p class="text-center">No products found.</p>
 	<?php endif; ?>
 </div>
 

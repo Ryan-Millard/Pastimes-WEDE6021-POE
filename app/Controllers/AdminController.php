@@ -6,34 +6,63 @@ require_once __DIR__ . './../models/UserModel.php';
 require_once __DIR__ . './../models/AdminModel.php';
 require_once __DIR__ . './../models/BuyerModel.php';
 require_once __DIR__ . './../models/SellerModel.php';
+require_once __DIR__ . './../models/ProductModel.php';
+require_once __DIR__ . './../models/ProductImageModel.php';
 require_once __DIR__ . '/Controller.php';
 
 use App\Models\UserModel;
 use App\Models\AdminModel;
 use App\Models\BuyerModel;
 use App\Models\SellerModel;
+use App\Models\ProductModel;
+use App\Models\ProductImageModel;
 
 class AdminController extends Controller {
 	protected $userModel;
 	protected $adminModel;
 	protected $buyerModel;
 	protected $sellerModel;
+	protected $productModel;
 
 	public function __construct(
 		AdminModel $adminModel = null,
 		UserModel $userModel = null,
 		BuyerModel $buyerModel = null,
-		SellerModel $sellerModel = null
+		SellerModel $sellerModel = null,
+		ProductModel $productModel = null,
+		ProductImageModel $productImageModel = null
 	) {
 		$this->adminModel = $adminModel;
 		$this->userModel = $userModel;
 		$this->buyerModel = $buyerModel;
 		$this->sellerModel = $sellerModel;
+		$this->productModel = $productModel;
+		$this->productImageModel = $productImageModel;
 	}
 
 	public function showDashboard() {
 		$unapprovedUsers = $this->userModel->getUnapprovedUsers();
-		$this->setData(['users' => $unapprovedUsers]);
+		$pendingProducts = $this->productModel->getAllPending();
+
+		// set default in case no images found
+		$images = [];
+		foreach($pendingProducts as $product) {
+			// fetch all Product_Image entries with same id
+			$productImage = $this->productImageModel->getByColumnValue('product_id', $product['product_id']);
+			if(is_array($productImage) && isset($productImage['product_image_url'])) {
+				// extract the file's name
+				$productImageUrl = $productImage['product_image_url'];
+				// add it to images
+				array_push($images, $productImageUrl);
+			}
+		}
+
+		$this->setData([
+			'users' => $unapprovedUsers,
+			'products' => $pendingProducts,
+			'images' => $images,
+			'noProductListHeading' => true,
+		]);
 		$this->render('adminDashboard');
 	}
 
@@ -99,5 +128,12 @@ class AdminController extends Controller {
 	private function setFlashMessage($message) {
 		$_SESSION['flash_message'] = $message;
 	}
-}
 
+	public function updateProductStatus() {
+		$newStatus = $_POST['approve'] ? 'approved' : 'rejected';
+
+		$successfulUpdate = $this->productModel->update($_POST['product_id'], ['product_status' => $newStatus]);
+
+		echo $successfulUpdate;
+	}
+}

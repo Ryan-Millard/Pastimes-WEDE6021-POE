@@ -32,6 +32,7 @@ $routes = [
 	['post', PASTIMES_BASE . '/login', [$controller('user'), 'login']],
 	['get', PASTIMES_BASE . '/logout', [$controller('user'), 'logout']],
 	['get', PASTIMES_BASE . '/admin', [$controller('admin'), 'showDashboard']],
+	['post', PASTIMES_BASE . '/admin/products/updateStatus', [$controller('admin'), 'updateProductStatus']],
 	['get', PASTIMES_BASE . '/admin/users/{id}', [$controller('admin'), 'showUserById']],
 	['post', PASTIMES_BASE . '/admin/users/{id}', [$controller('admin'), 'moderateUser']],
 	['get', PASTIMES_BASE . '/dashboard', [$controller('dashboard'), 'showDashboard']],

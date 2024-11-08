@@ -70,6 +70,23 @@
 					</div>
 				</td>
 			</tr>
+		<?php elseif (isset($_SESSION['admin']) && $product['product_status'] === 'pending'): ?>
+			<tr>
+				<th>Action</th>
+				<td>
+					<form action="/pastimes/admin/products/updateStatus" method="post" class="display-flex">
+						<input type="hidden" name="product_id" value="<?= htmlspecialchars($product['product_id']); ?>">
+						<div>
+							<button class="btn approve-btn" type="submit" name="approve" value="1">Approve Product</button>
+						</div>
+
+						<div>
+							<button class="btn reject-btn" type="submit" name="approve" value="0">Reject Product</button>
+						</div>
+					</form>
+
+				</td>
+			</tr>
 		<?php endif; ?>
     </table>
 <?php else: ?>
@@ -273,6 +290,39 @@ body {
     font-size: 16px;
     line-height: 1.6;
 	margin: 2%;
+}
+
+/* Approve Button */
+.approve-btn {
+    background-color: #28a745; /* Green color for approval */
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.approve-btn:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+
+/* Reject Button */
+.reject-btn {
+    background-color: #dc3545; /* Red color for rejection */
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.reject-btn:hover {
+    background-color: #c82333; /* Darker red on hover */
+}
+
+.display-flex {
+	display: flex;
+	justify-content: space-evenly;
 }
 </style>
 

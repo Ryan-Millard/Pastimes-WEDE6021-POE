@@ -41,7 +41,7 @@ class HomeController extends Controller {
 
 	public function index() {
 		// fetch products
-		$products = $this->productModel->getAll();
+		$products = $this->productModel->getAllByColumnValue('product_status', 'approved');
 
 		// set default in case no images found
 		$images = [];
@@ -104,7 +104,9 @@ class HomeController extends Controller {
 		// ----------------------------------------------------------------------------------------
 
 		// fetch the details of the user that is currently logged in
-		$buyer = $this->buyerModel->getByUserId($_SESSION['user']['user_id']);
+		$buyer = null;
+		if(isset($_SESSION['user']['user_id']))
+			$buyer = $this->buyerModel->getByUserId($_SESSION['user']['user_id']);
 		// initialise a default value, see elaboration below
 		$wishlistItemQuantity = 0;
 		if($buyer) {

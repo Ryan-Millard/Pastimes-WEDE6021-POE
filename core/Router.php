@@ -52,7 +52,8 @@ class Router {
 
 		// Apply middleware if it exists for the route
 		foreach ($this->middleware as $route => $middlewareList) {
-			if (preg_match("#^$route$#", $path)) {
+			// Check if the requested path starts with the middleware route
+			if (strpos($path, $route) === 0) {
 				foreach ($middlewareList as $middlewareData) {
 					list($middlewareInstance, $middlewareMethod) = $middlewareData['middleware']; // Unpack instance and method
 					$args = $middlewareData['args']; // Get the arguments
