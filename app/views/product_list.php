@@ -25,7 +25,7 @@
 		</div>
 
 	<?php elseif (isset($noProductFoundMessage)): ?>
-		<p><?= htmlspecialchars($noProductFoundMessage); ?></p>
+		<p class="text-center"><?= htmlspecialchars($noProductFoundMessage); ?></p>
 
 	<?php else: ?>
 		<p>No products found.</p>
@@ -37,5 +37,9 @@
 	display: flex;
 	justify-content: space-evenly;
     flex-wrap: wrap;
+}
+
+.text-center {
+	text-align: center;
 }
 </style>
