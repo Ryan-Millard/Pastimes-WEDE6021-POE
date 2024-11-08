@@ -23,6 +23,7 @@ $routes = [
 	['get', PASTIMES_BASE . '/home', [$controller('home'), 'index']],
 	['get', PASTIMES_BASE . '/products/{id}', [$controller('home'), 'showProductById']],
 	['post', PASTIMES_BASE . '/products/{id}', [$controller('home'), 'handleWishlistPost']],
+	['post', PASTIMES_BASE . '/addProduct', [$controller('product'), 'addProduct']],
 	['get', PASTIMES_BASE . '/categories', [$controller('category'), 'showAll']],
 	['get', PASTIMES_BASE . '/categories/{id}', [$controller('category'), 'showById']],
 	['get', PASTIMES_BASE . '/signup', [$controller('user'), 'showSignUpForm']],
@@ -49,6 +50,7 @@ $router->addMiddleware(PASTIMES_BASE . '/admin', [$middleware('auth'), 'handle']
 $router->addMiddleware(PASTIMES_BASE . '/admin', [$middleware('admin'), 'handle'], [$model('admin')]);
 $router->addMiddleware(PASTIMES_BASE . '/admin/users/{id}', [$middleware('auth'), 'handle']);
 $router->addMiddleware(PASTIMES_BASE . '/admin/users/{id}', [$middleware('admin'), 'handle'], [$model('admin')]);
+$router->addMiddleware(PASTIMES_BASE . '/addProduct', [$middleware('seller'), 'handle']);
 
 // Set the error controller as a callback to render the error view
 $router->setErrorCallback([$controller('error404'), 'show404']);

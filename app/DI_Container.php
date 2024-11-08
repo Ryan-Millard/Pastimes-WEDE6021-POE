@@ -13,6 +13,7 @@
 
 	require_once '../app/Middleware/AuthMiddleware.php';
 	require_once '../app/Middleware/AdminMiddleware.php';
+	require_once '../app/Middleware/SellerMiddleware.php';
 
 	require_once 'Models/MessageModel.php';
 
@@ -37,6 +38,7 @@
 
 	use \App\Middleware\AuthMiddleware;
 	use \App\Middleware\AdminMiddleware;
+	use \App\Middleware\SellerMiddleware;
 
 	class DI_Container {
 		private static $controllerInstances = [];
@@ -79,7 +81,7 @@
 			self::setController('user', new UserController(self::getModel('user'), self::getModel('seller'), self::getModel('buyer')));
 			self::setController('dashboard', new DashboardController(self::getModel('wishlist'), self::getModel('buyer'), self::getModel('seller')));
 			self::setController('admin', new AdminController(self::getModel('admin'), self::getModel('user'), self::getModel('buyer'), self::getModel('seller')));
-			self::setController('product', new ProductController(self::getModel('product')));
+			self::setController('product', new ProductController(self::getModel('product'), self::getModel('productImage'), self::getModel('seller')));
 			self::setController('message', new MessageController(self::getModel('message'), self::getModel('user')));
 			self::setController('error404', new Error404Controller(self::getModel('error404')));
 		}
@@ -104,6 +106,7 @@
 		private static function initMiddleware() {
 			self::setMiddleware('auth', new AuthMiddleware());
 			self::setMiddleware('admin', new AdminMiddleware());
+			self::setMiddleware('seller', new SellerMiddleware());
 		}
 	}
 
