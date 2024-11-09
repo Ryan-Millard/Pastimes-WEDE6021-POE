@@ -126,6 +126,7 @@ class HomeController extends Controller {
 			'image' => $image,
 			'seller_rating' => $seller_rating,
 			'username' => $username,
+			'user_id' => $user['user_id'],
 			'category' => $category,
 			'user_is_buyer' => ($buyer) ? true : false,
 			// quantity

@@ -148,27 +148,55 @@ abstract class Model
 	// data is associative [], key => value is column => entry
 	public function update($id, $data)
 	{
-		$fields = '';	// contains column name and ? (placeholder for entry)
+		$fields = ''; // contains column name and ? (placeholder for entry)
 		foreach($data as $key => $value)
-			$fields .= "$key = ?, ";	// append to fields
-		$fields = rtrim($fields, ', ');	// remove the last comma
+			$fields .= "$key = ?, "; // append to fields
+		$fields = rtrim($fields, ', '); // remove the last comma
+
 		// get the types of each column, and make sure id included
 		$types = $this->getParamTypes($data) . 'i';  // Add 'i' for the integer `id`
 
-		// prepare SQL statement
+		// prepare SQL statement for updating the record
 		$stmt = $this->conn->prepare("UPDATE $this->tableName SET $fields WHERE $this->tablePrimaryKey = ?");
 
 		if(!$stmt)
 			throw new Exception("Error preparing statement: " . $this->conn->error);
 
 		$data['id'] = $id;  // Add the ID to the data for binding
-		// replace ? placeholder with actual entry
+		// bind the parameters (including ID)
 		$stmt->bind_param($types, ...array_values($data));
 
+		// execute the update
 		if(!$stmt->execute())
 			throw new Exception("Error executing query: " . $stmt->error);
 
-		return $stmt->affected_rows; // Return the number of affected rows
+		// Check if any rows were affected
+		if ($stmt->affected_rows <= 0) {
+			throw new Exception("No rows affected or record not found.");
+		}
+
+		// After successful update, retrieve the updated record
+		$stmt->close(); // close the update statement
+
+		// Prepare a new statement to select the updated record
+		$selectStmt = $this->conn->prepare("SELECT * FROM $this->tableName WHERE $this->tablePrimaryKey = ?");
+		if (!$selectStmt)
+			throw new Exception("Error preparing select statement: " . $this->conn->error);
+
+		// Bind the ID parameter
+		$selectStmt->bind_param('i', $id);
+
+		// Execute the select query
+		if (!$selectStmt->execute())
+			throw new Exception("Error executing select query: " . $selectStmt->error);
+
+		// Get the result
+		$result = $selectStmt->get_result();
+		$updatedRecord = $result->fetch_assoc(); // Fetch the updated record as an associative array
+
+		$selectStmt->close(); // Close the select statement
+
+		return $updatedRecord; // Return the updated record
 	}
 
 	// Delete a record by ID

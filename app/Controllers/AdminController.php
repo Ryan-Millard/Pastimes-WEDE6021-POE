@@ -132,8 +132,14 @@ class AdminController extends Controller {
 	public function updateProductStatus() {
 		$newStatus = $_POST['approve'] ? 'approved' : 'rejected';
 
-		$successfulUpdate = $this->productModel->update($_POST['product_id'], ['product_status' => $newStatus]);
+		$updatedProduct = $this->productModel->update($_POST['product_id'], ['product_status' => $newStatus]);
 
-		echo $successfulUpdate;
+		$instructions = ($newStatus === 'rejected') ? ".<br /><br />Please tell the seller why the product was rejected" : '';
+		$this->setFlashMessage('The product has successfully been ' . $newStatus . $instructions . '.');
+
+		if($newStatus === 'approved')
+			$this->redirect('/pastimes/admin');
+		else
+			$this->redirect('/pastimes/messages/' . $_POST['user_id']);
 	}
 }

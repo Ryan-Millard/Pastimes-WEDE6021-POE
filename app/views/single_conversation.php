@@ -58,6 +58,7 @@
     }
 
     .chat-container {
+		min-height: 100px;
         width: 100%;
         background-color: white;
         padding: 20px;
@@ -82,6 +83,7 @@
         border-radius: 8px;
         max-width: 70%;
         word-wrap: break-word;
+		width: fit-content;
     }
 
     .sent {

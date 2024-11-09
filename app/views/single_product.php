@@ -76,6 +76,7 @@
 				<td>
 					<form action="/pastimes/admin/products/updateStatus" method="post" class="display-flex">
 						<input type="hidden" name="product_id" value="<?= htmlspecialchars($product['product_id']); ?>">
+						<input type="hidden" name="user_id" value="<?= htmlspecialchars($user_id); ?>">
 						<div>
 							<button class="btn approve-btn" type="submit" name="approve" value="1">Approve Product</button>
 						</div>
