@@ -9,6 +9,15 @@
 	</div>
 
 	<?php if(!empty($products)): ?>
+
+		<!-- If there are products and the user is a buyer -->
+		<?php if(in_array('buyer', $_SESSION['user']['user_roles'])): ?>
+				<form action="/pastimes/dashboard#wishlist" method="post" class="text-center">
+					<input type="hidden" name="action" value="empty_wishlist">
+					<button class="btn remove-from-wishlist" type="submit">Empty Wishlist</button>
+				</form>
+		<?php endif; ?>
+
 		<div class="flex-evenly">
 			<?php for($i = 0; $i < count($products); $i++): ?>
 				<?php
@@ -42,4 +51,28 @@
 .text-center {
 	text-align: center;
 }
+    /* Button Styles */
+    .btn {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        text-align: center;
+    }
+
+    .btn:hover {
+        background-color: #0056b3;
+    }
+
+    .btn.remove-from-wishlist {
+        background-color: #dc3545;
+    }
+
+    .btn.remove-from-wishlist:hover {
+        background-color: #c82333;
+    }
+
 </style>

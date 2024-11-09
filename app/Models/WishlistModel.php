@@ -105,4 +105,8 @@ class WishlistModel extends Model {
 			'images' => $images,
 		];
 	}
+
+	public function deleteAllByBuyerId($buyerId) {
+		return $this->deleteByColumnValue('buyer_id', $buyerId);
+	}
 }

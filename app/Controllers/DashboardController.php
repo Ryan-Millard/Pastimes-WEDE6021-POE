@@ -92,4 +92,23 @@ class DashboardController extends Controller {
 			'userType' => 'seller',
 		]);
 	}
+
+	public function emptyWishlist() {
+		//	If the post action isn't specified
+		if(	!isset($_POST['action'])
+			//	If the wrong action
+			|| $_POST['action'] !== 'empty_wishlist'
+			// If user is not a buyer
+			|| !in_array('buyer', $_SESSION['user']['user_roles'])
+		) {
+			return $this->redirect('/pastimes/dashboard');
+		}
+
+		$buyer = $this->buyerModel->getByUserId($_SESSION['user']['user_id']);
+		$buyerId = $buyer['buyer_id'];
+
+		$this->wishlistModel->deleteAllByBuyerId($buyerId);
+
+			return $this->redirect('/pastimes/dashboard#wishlist');
+	}
 }
