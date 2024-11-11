@@ -66,6 +66,7 @@ class DashboardController extends Controller {
 			'noProductFoundMessage' => 'There are no items in your wishlist.',
 			'containerId' => 'wishlist',
 			'userType' => 'buyer',
+			'showEmptyWishlistButton' => in_array('buyer', $_SESSION['user']['user_roles']),
 		]);
 		$this->render('userDashboard');
 	}

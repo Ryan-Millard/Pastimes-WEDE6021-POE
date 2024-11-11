@@ -11,7 +11,7 @@
 	<?php if(!empty($products)): ?>
 
 		<!-- If there are products and the user is a buyer -->
-		<?php if(in_array('buyer', $_SESSION['user']['user_roles'])): ?>
+		<?php if(isset( $showEmptyWishlistButton ) && $showEmptyWishlistButton): ?>
 				<form action="/pastimes/dashboard#wishlist" method="post" class="text-center">
 					<input type="hidden" name="action" value="empty_wishlist">
 					<button class="btn remove-from-wishlist" type="submit">Empty Wishlist</button>
