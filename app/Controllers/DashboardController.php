@@ -91,6 +91,7 @@ class DashboardController extends Controller {
 			'containerId' => 'soldItems',
 			'userType' => 'seller',
 		]);
+		$this->render('userDashboard');
 	}
 
 	public function emptyWishlist() {

@@ -8,6 +8,7 @@ require_once __DIR__ . './../models/BuyerModel.php';
 require_once __DIR__ . './../models/SellerModel.php';
 require_once __DIR__ . './../models/ProductModel.php';
 require_once __DIR__ . './../models/ProductImageModel.php';
+require_once __DIR__ . './../models/Model.php';
 require_once __DIR__ . '/Controller.php';
 
 use App\Models\UserModel;
@@ -16,6 +17,7 @@ use App\Models\BuyerModel;
 use App\Models\SellerModel;
 use App\Models\ProductModel;
 use App\Models\ProductImageModel;
+use App\Models\Model;
 
 class AdminController extends Controller {
 	protected $userModel;
@@ -23,6 +25,7 @@ class AdminController extends Controller {
 	protected $buyerModel;
 	protected $sellerModel;
 	protected $productModel;
+	protected $categoryModel;
 
 	public function __construct(
 		AdminModel $adminModel = null,
@@ -30,12 +33,14 @@ class AdminController extends Controller {
 		BuyerModel $buyerModel = null,
 		SellerModel $sellerModel = null,
 		ProductModel $productModel = null,
-		ProductImageModel $productImageModel = null
+		ProductImageModel $productImageModel = null,
+		Model $categoryModel = null
 	) {
 		$this->adminModel = $adminModel;
 		$this->userModel = $userModel;
 		$this->buyerModel = $buyerModel;
 		$this->sellerModel = $sellerModel;
+		$this->categoryModel = $categoryModel;
 		$this->productModel = $productModel;
 		$this->productImageModel = $productImageModel;
 	}
@@ -129,6 +134,11 @@ class AdminController extends Controller {
 		$_SESSION['flash_message'] = $message;
 	}
 
+	public function handleAdminModerationChoice() {
+		if(isset($_POST['approve']))
+			return $this->updateProductStatus();
+	}
+
 	public function updateProductStatus() {
 		$newStatus = $_POST['approve'] ? 'approved' : 'rejected';
 
@@ -141,5 +151,104 @@ class AdminController extends Controller {
 			$this->redirect('/pastimes/admin');
 		else
 			$this->redirect('/pastimes/messages/' . $_POST['user_id']);
+	}
+
+	public function editProduct($id) {
+		// ----------------------------------------------------------------------------------------
+		// STEP 1: Fetch seller and product data
+		// ----------------------------------------------------------------------------------------
+		// set default values in case there is no product with arg's id value
+		$product = '';
+		$seller_rating = '';
+		$username = '';
+		$category = '';
+		$productImage = '';
+		$image = '';
+
+		// fetch data by respective id
+		$product = $this->productModel->getByColumnValue('product_id', $id);
+		if(!empty($product)) {	// ensure there is a product with the arg's id
+			// fetch seller data
+			$seller = $this->sellerModel->getByColumnValue('seller_id', $product['seller_id']);
+			// retrieve seller's rating
+			$seller_rating = $seller['seller_rating'];
+
+			// fetch Seller's data
+			$user = $this->userModel->getByColumnValue('user_id', $seller['user_id']);
+			// set seller's username
+			$username = $user['username'];
+
+			// fetch user, category and product image using respective IDs
+			$category = $this->categoryModel->getByColumnValue('category_id', $product['category_id']);
+			$productImage = $this->productImageModel->getByColumnValue('product_id', $product['product_id']);
+
+			if(!empty($productImage)) {
+				// fetch image from product images based on image's url
+				// $image = string|false
+				// string -> valid img
+				$image = $this->productImageModel->getImageByName($productImage['product_image_url']);
+			}
+		}
+		// ----------------------------------------------------------------------------------------
+		// STEP 2: Fetch buyer data and quantity in wishlist (if in wishlist)
+		// ----------------------------------------------------------------------------------------
+
+		// fetch the details of the user that is currently logged in
+		$buyer = null;
+		if(isset($_SESSION['user']['user_id']))
+			$buyer = $this->buyerModel->getByUserId($_SESSION['user']['user_id']);
+		// initialise a default value, see elaboration below
+		$wishlistItemQuantity = 0;
+		if($buyer) {
+			$buyerId = $buyer['buyer_id'];
+			$productId = $id;	// $id is passed to this method by the routing system
+			// fetch logged in user's wishlist to pass quantity to the view
+			$wishlist = $this->wishlistModel->getByMultipleColumnValues([
+				'buyer_id' => $buyerId,
+				'product_id' => $productId,
+			]);
+
+			$wishlistItemQuantity = ($wishlist) ? $wishlist['quantity'] : 0;
+		}
+
+		$this->setData([
+			'product' => $product,
+			'image' => $image,
+			'seller_rating' => $seller_rating,
+			'username' => $username,
+			'user_id' => $user['user_id'],
+			'category' => $category,
+			'user_is_buyer' => ($buyer) ? true : false,
+			// quantity
+			// 		0: item not in wishlist
+			// 		>0: item in the wishlist
+			'quantity' => $wishlistItemQuantity
+		]);
+		$this->render('edit_product');
+	}
+
+	public function updateProduct($productId) {
+		$this->setFlashMessage('The product has successfully been updated.');
+
+		if((int)$_POST['approve'] === 0) {
+			$this->productModel->update($productId, [
+				'product_status' => 'rejected'
+			]);
+			return $this->redirect('/pastimes/admin');
+		}
+
+		$category = $this->categoryModel->getByColumnValue('category_name', $_POST['product_category']);
+		try {
+			$this->productModel->update($productId, [
+				'product_name' => $_POST['product_name'],
+				'product_condition' => $_POST['product_condition'],
+				'price' => $_POST['price'],
+				'category_id' => $category['category_id'],
+				'product_status' => 'approved'
+			]);
+		} catch(\Exception $e) {
+		}
+
+		return $this->redirect('/pastimes/admin');
 	}
 }

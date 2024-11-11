@@ -74,18 +74,23 @@
 			<tr>
 				<th>Action</th>
 				<td>
-					<form action="/pastimes/admin/products/updateStatus" method="post" class="display-flex">
-						<input type="hidden" name="product_id" value="<?= htmlspecialchars($product['product_id']); ?>">
-						<input type="hidden" name="user_id" value="<?= htmlspecialchars($user_id); ?>">
-						<div>
-							<button class="btn approve-btn" type="submit" name="approve" value="1">Approve Product</button>
-						</div>
+					<div class="display-flex">
+						<form action="/pastimes/admin/products/updateStatus" method="post" class="display-flex">
+							<input type="hidden" name="product_id" value="<?= htmlspecialchars($product['product_id']); ?>">
+							<input type="hidden" name="user_id" value="<?= htmlspecialchars($user_id); ?>">
+							<div>
+								<button class="btn approve-btn" type="submit" name="approve" value="1">Approve Product</button>
+							</div>
 
-						<div>
-							<button class="btn reject-btn" type="submit" name="approve" value="0">Reject Product</button>
-						</div>
-					</form>
+							<div>
+								<button class="btn reject-btn" type="submit" name="approve" value="0">Reject Product</button>
+							</div>
+						</form>
 
+						<a href="/pastimes/admin/products/editProduct/<?= htmlspecialchars($product['product_id']) ?>">
+							<button class="btn edit-btn">Edit Product</button>
+						</a>
+					</div>
 				</td>
 			</tr>
 		<?php endif; ?>
@@ -167,7 +172,6 @@
     .btn {
         background-color: #007bff;
         color: #fff;
-        padding: 10px 20px;
         border: none;
         border-radius: 5px;
         cursor: pointer;
@@ -301,6 +305,7 @@ body {
     padding: 10px 20px;
     cursor: pointer;
     transition: background-color 0.3s;
+margin-right: 10px;
 }
 
 .approve-btn:hover {
@@ -319,6 +324,20 @@ body {
 
 .reject-btn:hover {
     background-color: #c82333; /* Darker red on hover */
+}
+
+/* Approve Button */
+.edit-btn {
+    background-color: #007bff; /* Green color for approval */
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.edit-btn:hover {
+    background-color: #0056b3; /* Darker green on hover */
 }
 
 .display-flex {
