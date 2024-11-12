@@ -170,10 +170,10 @@ abstract class Model
 		if(!$stmt->execute())
 			throw new Exception("Error executing query: " . $stmt->error);
 
-		// Check if any rows were affected
-		if ($stmt->affected_rows <= 0) {
-			throw new Exception("No rows affected or record not found.");
-		}
+		// // Check if any rows were affected
+		// if ($stmt->affected_rows <= 0) {
+			// throw new Exception("No rows affected or record not found.");
+		// }
 
 		// After successful update, retrieve the updated record
 		$stmt->close(); // close the update statement
@@ -243,7 +243,7 @@ abstract class Model
 
 	// Helper function to get parameter types for bind_param based on data types
 	// data is associative [], key => value is column => entry
-	private function getParamTypes($data) {
+	protected function getParamTypes($data) {
 		// Loop through data and accumulate type indicators
 		$types = '';
 		foreach($data as $value) {
@@ -253,7 +253,7 @@ abstract class Model
 		return $types;
 	}
 
-	private function getParamType($value) {
+	protected function getParamType($value) {
 		// Array to map PHP type to corresponding type indicator
 		$typeMap = [
 			'integer' => 'i',
@@ -348,5 +348,9 @@ abstract class Model
 		}
 
 		return $fetchAll ? [] : null; // Return an empty array or null based on the fetch type
+	}
+
+	public function getById($id) {
+		return $this->getByColumnValue($this->tablePrimaryKey, $id);
 	}
 }

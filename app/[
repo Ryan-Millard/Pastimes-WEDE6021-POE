@@ -15,8 +15,6 @@ class ProductController extends Controller {
 	protected $categoryModel;
 	protected $wishlistModel;
 	protected $buyerModel;
-	protected $transactionModel;
-	protected $transactionProductModel;
 
 	public function __construct(
 		Model $productModel,
@@ -24,9 +22,7 @@ class ProductController extends Controller {
 		Model $sellerModel,
 		Model $categoryModel,
 		Model $wishlistModel,
-		Model $buyerModel,
-		Model $transactionModel,
-		Model $transactionProductModel,
+		Model $buyerModel
 	) {
 		parent::__construct();
 
@@ -36,8 +32,6 @@ class ProductController extends Controller {
 		$this->categoryModel= $categoryModel;
 		$this->wishlistModel = $wishlistModel;
 		$this->buyerModel = $buyerModel;
-		$this->transactionModel = $transactionModel;
-		$this->transactionProductModel= $transactionProductModel;
 	}
 
 	public function addProduct() {
@@ -77,56 +71,16 @@ class ProductController extends Controller {
 		$buyerId = $buyer['buyer_id'];
 		[
 			'products' => $products,
-			'images' => $images
+			'images' => $wishlistImages
 		] = $this->wishlistModel->getProductsAndImages($buyerId);
 
 		$wishlist = $this->wishlistModel->getAllByColumnValue('buyer_id', $buyerId);
 
 		$this->setData([
 			'products' => $products,
-			'images' => $images,
+			'wishlistImages' => $wishlist,
 			'wishlist' => $wishlist
 		]);
 		return $this->render('checkout');
-	}
-
-	public function processCheckout() {
-		$userId = $_SESSION['user']['user_id'];
-
-		$buyer = $this->buyerModel->getByUserId($userId);
-		$buyerId = $buyer['buyer_id'];
-
-		$wishlist = $this->wishlistModel->getAllByColumnValue('buyer_id', $buyerId);
-
-		// Log new transaction
-		$transactionDataForInsert = [
-			'buyer_id' => $buyerId,
-			'total_price' => $_POST['total_price'],
-			'shipping_address' => $_POST['address'],
-			'payment_method' => $_POST['payment_method'],
-		];
-		$transactionId = $this->transactionModel->insert($transactionDataForInsert);
-
-		// Insert all products purchased & delete from wishlist
-		foreach($wishlist as $purchasedProduct) {
-			$productId = $purchasedProduct['product_id'];
-			$quantityPurchased = $purchasedProduct['quantity'];
-			$this->productModel->decreaseQuantity($productId, $quantityPurchased);
-
-			// Insert purchased products
-			$this->transactionProductModel->insert([
-				'transaction_id' => $transactionId,
-				'product_id' => $productId,
-				'quantity' => $quantityPurchased,
-			]);
-
-			// Remove the items the user bought from their wishlist
-			$this->wishlistModel->deleteByColumnsValues([
-				'buyer_id' => $buyerId,
-				'product_id' => $productId,
-			]);
-		}
-
-		$this->redirect('/pastimes/purchases/' . $transactionId);
 	}
 }

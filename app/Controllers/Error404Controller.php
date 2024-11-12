@@ -11,8 +11,6 @@ use App\Controllers\Controller;
 class Error404Controller extends Controller {
 	public function __construct(Model $model = null) {
 		parent::__construct($model);
-
-		$this->tableName = '';
 	}
 
 	public function show404() {

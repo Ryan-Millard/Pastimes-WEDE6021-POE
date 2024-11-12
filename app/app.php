@@ -41,7 +41,10 @@ $routes = [
 	['post', PASTIMES_BASE . '/dashboard', [$controller('dashboard'), 'emptyWishlist']],
 	['get', PASTIMES_BASE . '/messages', [$controller('message'), 'showAll']],
 	['get', PASTIMES_BASE . '/messages/{id}', [$controller('message'), 'getConversation']],
-	['post', PASTIMES_BASE . '/messages/send', [$controller('message'), 'sendMessage']]
+	['post', PASTIMES_BASE . '/messages/send', [$controller('message'), 'sendMessage']],
+	['get', PASTIMES_BASE . '/checkout', [$controller('product'), 'displayCheckout']],
+	['post', PASTIMES_BASE . '/checkout', [$controller('product'), 'processCheckout']],
+	['get', PASTIMES_BASE . '/purchases/{id}', [$controller('purchase'), 'getTransactionById']],
 ];
 
 // Register routes
