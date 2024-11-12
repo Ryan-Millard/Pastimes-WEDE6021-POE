@@ -32,7 +32,7 @@ class CategoryController extends Controller {
 	public function showAll() {
 		// fetch categories and products
 		$categories = $this->categoryModel->getAll();
-		$products = $this->productModel->getAll();
+		$products = $this->productModel->getAllByColumnValue('product_status', 'approved');
 
 		// set default in case no images found
 		$images = [];
@@ -58,7 +58,10 @@ class CategoryController extends Controller {
 	// show categories by ID along with products in the category
 	public function showById($id) {
 		$category = $this->categoryModel->getByColumnValue('category_id', $id);
-		$products = $this->productModel->getAllByColumnValue('category_id', $id);
+		$products = $this->productModel->getAllByMultipleColumnValues([
+			'category_id' => $id,
+			'product_status' => 'approved',
+		]);
 
 		// set default in case no images found
 		$images = [];
