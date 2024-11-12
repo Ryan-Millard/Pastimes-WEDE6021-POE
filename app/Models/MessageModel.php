@@ -14,21 +14,22 @@ class MessageModel extends Model {
 		try {
 			// Prepare the SQL query
 			$query = "
-				SELECT m.*
-				FROM Messages m
-				JOIN (
-					SELECT 
-						LEAST(sender_id, receiver_id) AS user1,
-						GREATEST(sender_id, receiver_id) AS user2,
-						MAX(sent_at) AS latest_sent_at
-					FROM Messages
-					WHERE sender_id = ? OR receiver_id = ?
-					GROUP BY user1, user2
-				) latest_messages
-					ON (LEAST(m.sender_id, m.receiver_id) = latest_messages.user1
-						AND GREATEST(m.sender_id, m.receiver_id) = latest_messages.user2
-						AND m.sent_at = latest_messages.latest_sent_at)
-				ORDER BY m.sent_at DESC
+            SELECT m.*
+            FROM Messages m
+            JOIN (
+                SELECT
+                    LEAST(sender_id, receiver_id) AS user1,
+                    GREATEST(sender_id, receiver_id) AS user2,
+                    MAX(sent_at) AS latest_sent_at
+                FROM Messages
+                WHERE sender_id = ? OR receiver_id = ?
+                GROUP BY user1, user2
+            ) latest_messages
+                ON (LEAST(m.sender_id, m.receiver_id) = latest_messages.user1
+                    AND GREATEST(m.sender_id, m.receiver_id) = latest_messages.user2
+                    AND m.sent_at = latest_messages.latest_sent_at)
+            ORDER BY m.message_id DESC
+            LIMIT 1
 			";
 
 			// Prepare the statement
