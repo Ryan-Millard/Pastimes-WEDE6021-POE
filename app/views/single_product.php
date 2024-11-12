@@ -55,7 +55,7 @@
 								<input type="number" name="quantity" id="quantity" value="<?= $quantity ?>" min="1" style="width: 50px; text-align: center;">
 								<button type="button" class="quantity-btn" onclick="changeQuantity(1)">+</button>
 								<input type="hidden" name="action" value="add_to_wishlist">
-								<button class="btn add-to-wishlist" type="submit">Add</button>
+								<button class="btn add-to-wishlist" type="submit">Add To Wishlist</button>
 							</div>
 						</form>
 
@@ -64,7 +64,7 @@
 							<form action="/pastimes/products/<?= $product['product_id'] ?>" method="POST">
 								<input type="hidden" name="product_id" value="<?= htmlspecialchars($product['product_id']); ?>">
 								<input type="hidden" name="action" value="remove_from_wishlist">
-								<button class="btn remove-from-wishlist" type="submit">Remove</button>
+								<button class="btn remove-from-wishlist" type="submit">Remove From Wishlist</button>
 							</form>
 					<?php endif; ?>
 					</div>
