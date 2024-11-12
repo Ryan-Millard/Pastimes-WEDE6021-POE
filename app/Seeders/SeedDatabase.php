@@ -49,8 +49,8 @@ class SeedDatabase {
 			$userSeeder->seed();
 			$sellerSeeder->seed();
 			$categorySeeder->seed();
-			$productImageSeeder->seed();
 			$productSeeder->seed();
+			$productImageSeeder->seed();
 			$wishlistSeeder->seed();
 			$messageSeeder->seed();
 			$transactionSeeder->seed();

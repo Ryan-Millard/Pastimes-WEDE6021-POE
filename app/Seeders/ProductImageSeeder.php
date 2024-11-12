@@ -81,4 +81,32 @@ class ProductImageSeeder extends Seeder {
 			throw new \Exception("Error opening seed file: " . $filePath);
 		}
 	}
+
+	public function clearTable() {
+		$sql = "SELECT product_image_url from {$this->tableName}";
+
+		$result = $this->conn->query($sql);
+
+		if($result->num_rows > 0) {
+			while($row = $result->fetch_assoc()) {
+				$imageName = $row['product_image_url'];
+				$productionImageDir = __DIR__ . '/../../public/images/products/';
+				$file = $productionImageDir . $imageName;
+
+				if(file_exists($file)) {
+					if(unlink($file)) {
+						echo "File '$file' has been deleted.\n";
+					}
+					else {
+						echo "Error deleting '$file'.\n";
+					}
+				}
+				else {
+					echo "File '$file' does not exist.\n";
+				}
+			}
+		}
+
+		return parent::clearTable();
+	}
 }
