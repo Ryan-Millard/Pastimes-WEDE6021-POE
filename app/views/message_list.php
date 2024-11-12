@@ -1,5 +1,5 @@
 <h1 class="my-h1">Messages</h1>
-<?php if(!$messages): ?>
+<?php if(!isset($messages) || !$messages): ?>
 	<p>Your inbox is empty.</p>
 <?php else: ?>
 	<div class="message-container">
