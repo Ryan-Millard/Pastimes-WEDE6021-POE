@@ -66,12 +66,11 @@ class ProductController extends Controller {
 		// echo '</pre><br />';
 
 		$newProductId = $this->productModel->insert($productData);
-		echo '<pre>';
-		echo var_dump($newProductId);
-		echo '</pre><br />';
 
 		$newProductImage = $this->productImageModel->insertImage($_FILES['image'], $newProductId);
-		// check enums
+
+		$_SESSION['flash_message'] = "New listing created successfully. Please wait for an admin to moderate it. <br />According to our policies, listings must be approved before they can go on the market";
+		$this->redirect('/pastimes/products/' . $newProductId);
 	}
 
 	public function displayCheckout() {
