@@ -17,6 +17,7 @@ class ProductController extends Controller {
 	protected $buyerModel;
 	protected $transactionModel;
 	protected $transactionProductModel;
+	protected $messageModel;
 
 	public function __construct(
 		Model $productModel,
@@ -27,6 +28,7 @@ class ProductController extends Controller {
 		Model $buyerModel,
 		Model $transactionModel,
 		Model $transactionProductModel,
+		Model $messageModel,
 	) {
 		parent::__construct();
 
@@ -38,6 +40,7 @@ class ProductController extends Controller {
 		$this->buyerModel = $buyerModel;
 		$this->transactionModel = $transactionModel;
 		$this->transactionProductModel= $transactionProductModel;
+		$this->messageModel= $messageModel;
 	}
 
 	public function addProduct() {
@@ -106,12 +109,35 @@ class ProductController extends Controller {
 			'payment_method' => $_POST['payment_method'],
 		];
 		$transactionId = $this->transactionModel->insert($transactionDataForInsert);
+		$transaction = $this->transactionModel->getByColumnValue('transaction_id', $transactionId);
 
+		$count = 0;
 		// Insert all products purchased & delete from wishlist
 		foreach($wishlist as $purchasedProduct) {
 			$productId = $purchasedProduct['product_id'];
 			$quantityPurchased = $purchasedProduct['quantity'];
+			// decrease quantity available
 			$this->productModel->decreaseQuantity($productId, $quantityPurchased);
+			// get the product
+			$product = $this->productModel->getByColumnValue('product_id', $productId);
+
+			// get seller
+			$seller = $this->sellerModel->getByColumnValue('seller_id', $product['seller_id']);
+			// get the seller's id
+			$sellerId = $seller['user_id'];
+
+			// get currently logged in user's (buyer's) id
+			$currentUserId = $_SESSION['user']['user_id'];
+
+			$this->messageModel->insert([
+				'sender_id' => $currentUserId,
+				'receiver_id' => $sellerId,
+				'message' => 'This user has purchased ' . 
+							$quantityPurchased . ' ' .
+							$product['product_name'] . 
+							'(s) from you, with reference number: ' . 
+							$transaction['reference_number'],
+			]);
 
 			// Insert purchased products
 			$this->transactionProductModel->insert([
@@ -126,6 +152,8 @@ class ProductController extends Controller {
 				'product_id' => $productId,
 			]);
 		}
+
+		$_SESSION['flash_message'] = 'Transaction completed successfully';
 
 		$this->redirect('/pastimes/purchases/' . $transactionId);
 	}

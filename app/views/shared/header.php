@@ -17,8 +17,9 @@
             <a class="light-emphasis <?php echo ($_SERVER['REQUEST_URI'] == '/pastimes/login') ? 'active' : ''; ?>" href="/pastimes/login">Log in</a>
         <?php else: ?>
 			<?php if(in_array('buyer', $userRoles)): ?>
-				<a class="light-emphasis <?php echo ($_SERVER['REQUEST_URI'] == '/pastimes/dashboard') ? 'active' : ''; ?>" href="/pastimes/checkout">Checkout</a>
+				<a class="light-emphasis <?php echo ($_SERVER['REQUEST_URI'] == '/pastimes/checkout') ? 'active' : ''; ?>" href="/pastimes/checkout">Checkout</a>
 				<a class="light-emphasis <?php echo ($_SERVER['REQUEST_URI'] == '/pastimes/dashboard') ? 'active' : ''; ?>" href="/pastimes/dashboard#wishlist">Wishlist</a>
+				<a class="light-emphasis <?php echo ($_SERVER['REQUEST_URI'] == '/pastimes/purchases') ? 'active' : ''; ?>" href="/pastimes/purchases">History</a>
 			<?php elseif(in_array('seller', $userRoles)): ?>
 				<a class="light-emphasis <?php echo ($_SERVER['REQUEST_URI'] == '/pastimes/dashboard') ? 'active' : ''; ?>" href="/pastimes/dashboard#soldItems">My Listings</a>
 			<?php endif; ?>

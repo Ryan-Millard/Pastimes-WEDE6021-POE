@@ -87,10 +87,10 @@
 			self::setController('user', new UserController(self::getModel('user'), self::getModel('seller'), self::getModel('buyer')));
 			self::setController('dashboard', new DashboardController(self::getModel('wishlist'), self::getModel('buyer'), self::getModel('seller')));
 			self::setController('admin', new AdminController(self::getModel('admin'), self::getModel('user'), self::getModel('buyer'), self::getModel('seller'), self::getModel('product'), self::getModel('productImage'), self::getModel('category')));
-			self::setController('product', new ProductController(self::getModel('product'), self::getModel('productImage'), self::getModel('seller'), self::getModel('category'), self::getModel('wishlist'), self::getModel('buyer'), self::getModel('transaction'), self::getModel('transactionProduct')));
+			self::setController('product', new ProductController(self::getModel('product'), self::getModel('productImage'), self::getModel('seller'), self::getModel('category'), self::getModel('wishlist'), self::getModel('buyer'), self::getModel('transaction'), self::getModel('transactionProduct'), self::getModel('message')));
 			self::setController('message', new MessageController(self::getModel('message'), self::getModel('user')));
 			self::setController('error404', new Error404Controller(self::getModel('error404')));
-			self::setController('purchase', new PurchaseController(self::getModel('transaction'), self::getModel('transactionProduct'), self::getModel('product')));
+			self::setController('purchase', new PurchaseController(self::getModel('transaction'), self::getModel('transactionProduct'), self::getModel('product'), self::getModel('buyer'), self::getModel('seller')));
 		}
 
 		private static function initModels() {
