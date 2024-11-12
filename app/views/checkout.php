@@ -147,13 +147,6 @@ document.getElementById('payment-method').addEventListener('change', function() 
 </script>
 
 <style>
-/* General Styles */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-}
 
 .checkout-container {
     width: 70%;

@@ -17,15 +17,34 @@ class PurchaseController extends Controller {
 		Model $transactionModel,
 		Model $transactionProductModel,
 		Model $productModel,
+		Model $buyerModel,
+		Model $sellerModel,
 	) {
 		parent::__construct();
 
 		$this->transactionModel = $transactionModel;
 		$this->transactionProductModel= $transactionProductModel;
 		$this->productModel= $productModel;
+		$this->buyerModel= $buyerModel;
+		$this->sellerModel= $sellerModel;
 	}
 
 	public function getAllTransactionsForUser() {
+		$userId = $_SESSION['user']['user_id'];
+
+		// get user's buyer details
+		$buyer = $this->buyerModel->getByUserId($userId);
+		if(!$buyer) {
+			$_SESSION['flash_message'] = 'Only buyers have access to that page.';
+			return $this->redirect('/pastimes');
+		}
+
+		$purchases = $this->transactionModel->getAllByColumnValue('buyer_id', $buyer['buyer_id']);
+
+		$this->setData([
+			'purchases' => $purchases,
+		]);
+		return $this->render('transactions_list');
 	}
 
 	public function getTransactionById($id) {

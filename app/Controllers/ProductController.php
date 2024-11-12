@@ -155,6 +155,7 @@ class ProductController extends Controller {
 
 		$_SESSION['flash_message'] = 'Transaction completed successfully';
 
-		$this->redirect('/pastimes/purchases/' . $transactionId);
+		$this->redirect('/pastimes/logout');
+		// $this->redirect('/pastimes/purchases/' . $transactionId);
 	}
 }

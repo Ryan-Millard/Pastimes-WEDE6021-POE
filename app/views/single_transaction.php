@@ -42,7 +42,7 @@
 
             <tr class="total-row">
                 <td colspan="4" class="text-right"><strong>Total:</strong></td>
-                <td><strong>$<?= number_format($total, 2) ?></strong></td>
+                <td><strong>R<?= number_format($total, 2) ?></strong></td>
             </tr>
         </tbody>
     </table>

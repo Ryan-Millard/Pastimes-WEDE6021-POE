@@ -142,7 +142,7 @@ class UserController extends Controller {
 		$_SESSION = array();
 
 		$_SESSION['flash_message'] = 'You have been logged out successfully!';
-		$this->redirect('/pastimes');
+		$this->redirect('/pastimes/login');
 	}
 
 	// Validate username
