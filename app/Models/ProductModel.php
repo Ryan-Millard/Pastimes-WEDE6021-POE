@@ -38,7 +38,7 @@ class ProductModel extends Model {
 
 		// Ensure there's enough quantity to decrease
 		if ($currentQuantity < $quantity) {
-			throw new Exception("Not enough quantity available to decrease by $quantity.");
+			throw new \Exception("Not enough quantity available to decrease by $quantity.");
 		}
 
 		// Calculate the new quantity

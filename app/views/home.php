@@ -30,16 +30,6 @@
 </div>
 
 <style>
-/* General container styling */
-.container {
-    padding: 20px;
-    font-family: 'Arial', sans-serif;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    border: 1px solid #eaeaea;
-}
-
 /* Centered text for headings */
 .centered-text {
     text-align: center;
@@ -93,4 +83,3 @@
     }
 }
 </style>
-

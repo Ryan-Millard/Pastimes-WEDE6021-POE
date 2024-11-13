@@ -110,7 +110,6 @@ class ProductController extends Controller {
 		$transactionId = $this->transactionModel->insert($transactionDataForInsert);
 		$transaction = $this->transactionModel->getByColumnValue('transaction_id', $transactionId);
 
-		$count = 0;
 		// Insert all products purchased & delete from wishlist
 		foreach($wishlist as $purchasedProduct) {
 			$productId = $purchasedProduct['product_id'];
