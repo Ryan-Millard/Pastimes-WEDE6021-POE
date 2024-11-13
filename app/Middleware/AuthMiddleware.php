@@ -11,7 +11,7 @@ class AuthMiddleware {
 		$_SESSION['flash_message'] = 'You need to be logged in to view that page. ';
 
 		// Redirect back to the referrer or to the login page if not available
-		header('Location: ' . '/pastimes/login');
+		header('Location: ' . '/pastimes');
 
 		exit();
 	}

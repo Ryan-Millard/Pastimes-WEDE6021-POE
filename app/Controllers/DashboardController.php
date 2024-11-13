@@ -41,6 +41,11 @@ class DashboardController extends Controller {
 		if($seller) {
 			$this->showSellerDashboard($seller);
 		}
+
+		if(in_array('admin', $_SESSION['user']['user_roles'])) {
+			$_SESSION['flash_message'] = 'You have been redirected to the admin dashboard since you are an admin.';
+			$this->redirect('/pastimes/admin');
+		}
 	}
 
 	private function showBuyerDashboard($buyer) {

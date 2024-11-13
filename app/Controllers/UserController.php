@@ -16,12 +16,14 @@ class UserController extends Controller {
 		UserModel $userModel,
 		Model $sellerModel,
 		Model $buyerModel,
+		Model $adminModel,
 	) {
 		parent::__construct();
 
 		$this->userModel = $userModel;
 		$this->sellerModel = $sellerModel;
 		$this->buyerModel = $buyerModel;
+		$this->adminModel= $adminModel;
 	}
 
 	public function showLoginForm() {
@@ -62,6 +64,8 @@ class UserController extends Controller {
 				$userRoles[] = 'buyer';
 			if($this->sellerModel->getByUserId($userId))
 				$userRoles[] = 'seller';
+			if($this->adminModel->getByUserId($userId))
+				$userRoles[] = 'admin';
 			$user['user_roles'] = $userRoles;
 
 			// Start session and redirect to dashboard

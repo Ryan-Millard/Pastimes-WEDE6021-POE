@@ -19,46 +19,104 @@ define('PASTIMES_BASE', '/pastimes');
 
 // Define routes
 $routes = [
-	['get', PASTIMES_BASE, [$controller('home'), 'index']],
-	['get', PASTIMES_BASE . '/home', [$controller('home'), 'index']],
-	['get', PASTIMES_BASE . '/products/{id}', [$controller('home'), 'showProductById']],
-	['post', PASTIMES_BASE . '/products/{id}', [$controller('home'), 'handleWishlistPost']],
-	['post', PASTIMES_BASE . '/addProduct', [$controller('product'), 'addProduct']],
-	['get', PASTIMES_BASE . '/categories', [$controller('category'), 'showAll']],
-	['get', PASTIMES_BASE . '/categories/{id}', [$controller('category'), 'showById']],
-	['get', PASTIMES_BASE . '/signup', [$controller('user'), 'showSignUpForm']],
-	['post', PASTIMES_BASE . '/signup', [$controller('user'), 'signup']],
-	['get', PASTIMES_BASE . '/login', [$controller('user'), 'showLoginForm']],
-	['post', PASTIMES_BASE . '/login', [$controller('user'), 'login']],
-	['get', PASTIMES_BASE . '/logout', [$controller('user'), 'logout']],
-	['get', PASTIMES_BASE . '/admin', [$controller('admin'), 'showDashboard']],
-	['post', PASTIMES_BASE . '/admin/products/updateStatus', [$controller('admin'), 'handleAdminModerationChoice']],
-	['get', PASTIMES_BASE . '/admin/products/editProduct/{id}', [$controller('admin'), 'editProduct']],
-	['post', PASTIMES_BASE . '/admin/products/updateProduct/{id}', [$controller('admin'), 'updateProduct']],
-	['get', PASTIMES_BASE . '/admin/users/{id}', [$controller('admin'), 'showUserById']],
-	['post', PASTIMES_BASE . '/admin/users/{id}', [$controller('admin'), 'moderateUser']],
-	['get', PASTIMES_BASE . '/dashboard', [$controller('dashboard'), 'showDashboard']],
-	['post', PASTIMES_BASE . '/dashboard', [$controller('dashboard'), 'emptyWishlist']],
-	['get', PASTIMES_BASE . '/messages', [$controller('message'), 'showAll']],
-	['get', PASTIMES_BASE . '/messages/{id}', [$controller('message'), 'getConversation']],
-	['post', PASTIMES_BASE . '/messages/send', [$controller('message'), 'sendMessage']],
-	['get', PASTIMES_BASE . '/checkout', [$controller('product'), 'displayCheckout']],
-	['post', PASTIMES_BASE . '/checkout', [$controller('product'), 'processCheckout']],
-	['get', PASTIMES_BASE . '/purchases', [$controller('purchase'), 'getAllTransactionsForUser']],
-	['get', PASTIMES_BASE . '/purchases/{id}', [$controller('purchase'), 'getTransactionById']],
+    ['get', '', [$controller('home'), 'index']],
+    ['get', '/home', [$controller('home'), 'index']],
+    ['get', '/products/{id}', [$controller('home'), 'showProductById']],
+    ['post', '/products/{id}', [$controller('home'), 'handleWishlistPost']],
+    ['post', '/addProduct', [$controller('product'), 'addProduct']],
+    ['get', '/categories', [$controller('category'), 'showAll']],
+    ['get', '/categories/{id}', [$controller('category'), 'showById']],
+    ['get', '/signup', [$controller('user'), 'showSignUpForm']],
+    ['post', '/signup', [$controller('user'), 'signup']],
+    ['get', '/login', [$controller('user'), 'showLoginForm']],
+    ['post', '/login', [$controller('user'), 'login']],
+    ['get', '/logout', [$controller('user'), 'logout']],
+    ['get', '/admin', [$controller('admin'), 'showDashboard']],
+    ['post', '/admin/products/updateStatus', [$controller('admin'), 'handleAdminModerationChoice']],
+    ['get', '/admin/products/editProduct/{id}', [$controller('admin'), 'editProduct']],
+    ['post', '/admin/products/updateProduct/{id}', [$controller('admin'), 'updateProduct']],
+    ['get', '/admin/users/{id}', [$controller('admin'), 'showUserById']],
+    ['post', '/admin/users/{id}', [$controller('admin'), 'moderateUser']],
+    ['get', '/dashboard', [$controller('dashboard'), 'showDashboard']],
+    ['post', '/dashboard', [$controller('dashboard'), 'emptyWishlist']],
+    ['get', '/messages', [$controller('message'), 'showAll']],
+    ['get', '/messages/{id}', [$controller('message'), 'getConversation']],
+    ['post', '/messages/send', [$controller('message'), 'sendMessage']],
+    ['get', '/checkout', [$controller('product'), 'displayCheckout']],
+    ['post', '/checkout', [$controller('product'), 'processCheckout']],
+    ['get', '/purchases', [$controller('purchase'), 'getAllTransactionsForUser']],
+    ['get', '/purchases/{id}', [$controller('purchase'), 'getTransactionById']],
+];
+
+// Define middleware configurations
+$middleware_configs = [
+    // Auth middleware - User must be logged in
+    ['auth' => [
+        '/dashboard',
+        '/admin',
+        '/admin/products/updateStatus',
+        '/admin/users/{id}',
+        '/logout',
+        '/messages',
+        '/messages/{id}',
+        '/messages/send'
+    ]],
+    
+    // Admin middleware - User must be admin
+    ['admin' => [
+        ['/admin', [$model('admin')]],
+        ['/admin/products/updateStatus', [$model('admin')]],
+        ['/admin/products/editProduct/{id}', [$model('admin')]],
+        ['/admin/products/updateProduct/{id}', [$model('admin')]],
+        ['/admin/users/{id}', [$model('admin')]]
+    ]],
+    
+    // Seller middleware - User must be seller
+    ['seller' => [
+        '/addProduct'
+    ]],
+    
+    // Buyer middleware - User must be buyer
+    ['buyer' => [
+        '/checkout',
+        '/purchases',
+        '/purchases/{id}'
+    ]],
+    
+    // Guest middleware - User must NOT be logged in
+    ['guest' => [
+        '/signup',
+        '/login'
+    ]]
 ];
 
 // Register routes
-foreach($routes as [$method, $path, $action])
-	$router->$method($path, $action);
+foreach($routes as [$method, $path, $action]) {
+    $router->$method(PASTIMES_BASE . $path, $action);
+}
 
-// Apply middleware
-$router->addMiddleware(PASTIMES_BASE . '/dashboard', [$middleware('auth'), 'handle']);
-$router->addMiddleware(PASTIMES_BASE . '/admin', [$middleware('auth'), 'handle']);
-$router->addMiddleware(PASTIMES_BASE . '/admin', [$middleware('admin'), 'handle'], [$model('admin')]);
-$router->addMiddleware(PASTIMES_BASE . '/admin/users/{id}', [$middleware('auth'), 'handle']);
-$router->addMiddleware(PASTIMES_BASE . '/admin/users/{id}', [$middleware('admin'), 'handle'], [$model('admin')]);
-$router->addMiddleware(PASTIMES_BASE . '/addProduct', [$middleware('seller'), 'handle']);
+// Register middleware
+foreach($middleware_configs as $config) {
+    foreach($config as $type => $paths) {
+        foreach($paths as $path) {
+            if (is_array($path)) {
+                // For middleware with additional parameters (like admin middleware with model)
+                [$routePath, $additionalParams] = $path;
+                $router->addMiddleware(
+                    PASTIMES_BASE . $routePath, 
+                    [$middleware($type), 'handle'],
+                    $additionalParams
+                );
+            } else {
+                // For simple middleware without additional parameters
+                $router->addMiddleware(
+                    PASTIMES_BASE . $path, 
+                    [$middleware($type), 'handle']
+                );
+            }
+        }
+    }
+}
 
 // Set the error controller as a callback to render the error view
 $router->setErrorCallback([$controller('error404'), 'show404']);

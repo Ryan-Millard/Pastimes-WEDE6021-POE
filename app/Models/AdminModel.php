@@ -11,4 +11,8 @@ class AdminModel extends Model {
 		parent::__construct();
 		$this->tableName = 'Admins';
 	}
+
+	public function getByUserId($userId) {
+		return $this->getByColumnValue('user_id', $userId);
+	}
 }

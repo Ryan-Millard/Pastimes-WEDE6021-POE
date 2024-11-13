@@ -26,7 +26,7 @@ class AdminMiddleware {
 		$_SESSION['flash_message'] = 'Only admins are allowed access to this page.';
 
 		// Get the referring URL
-		$referrer = $_SERVER['HTTP_REFERER'] ?? '/pastimes/login';
+		$referrer = $_SERVER['HTTP_REFERER'] ?? '/pastimes';
 		// Redirect back to the referrer or to the login page if not available
 		header('Location: ' . $referrer);
 
