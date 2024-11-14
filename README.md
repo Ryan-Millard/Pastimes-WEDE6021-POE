@@ -171,7 +171,7 @@ This topic covers setting up a new database with fictitious entries as well as s
 ### 2. Creating the .env file (if it doesn't exist) and ensure that it contains the below:
 
 To get started with connecting to the database, you will need to create a .env file in the root directory of the project.
-Once you have created it, open it in your preferred text editor and paste the below into the file:
+Once you have created it, open it in your preferred text editor and paste the below into the file, ensuring that the username and password is correct for the user you intend to use to connect to the database with:
 
     DB_HOST=localhost
     DB_USERNAME=root
@@ -180,10 +180,10 @@ Once you have created it, open it in your preferred text editor and paste the be
 
 If you would like to create a custom configuration, see the [phpMyAdmin Documentation](https://docs.phpmyadmin.net/en/latest/user.html).
 Remember to update the .env file to reference the newly created credentials for you database, including the user's username and password, the database name, and the host.
-If you use a different database name, you will need to change it in several files to reflect your DB's name, however that would be a long process, so that is not recommended.
+If you use a different database name, you will need to change it in several files to reflect your DB's name as well as rename the app/Database/pastimes.sql file to reflect your database's name, however that would be a long process, so that is not recommended.
 
 #### Note:
-- You will need to ensure that all details in the file are exactly the same as what phpMyAdmin has been configured with.
+- You will need to ensure that all details in the .env file are exactly the same as what your phpMyAdmin user has been configured with, namely the username and password.
 - Unless you have created the database under a different name, you cannot change the DB_DATABASE as it will not function correctly if you do.
 
 To connect to to the database, you only require those four credentials. The core/Functions/LoadEnv.php's EnvLoader class's load function only loads those four, so keep that in mind when configuring the .env file.
@@ -288,6 +288,18 @@ A list of key features included in the project:
 - Wishlists Table: Stores products saved by users for future reference.
 - Categories Table: Stores the various categories of products available in the store.
 - Messages Table: Stores messages send by users and references two users (linked via user_id).
+
+### Seeding
+- All code for seeding can be found in the app/Seeders directory
+- Every table in the database has a seeder class, which all inherit from the Seeder base class in the Seeder.php file, which allows data to be loaded into the database when the loadClothingStore.php file is run.
+- loadClothingStore.php calls the seed() function from the SeedDatabase class in SeedDatabase.php
+- SeedDatabase.php is the file that seeds the database. It connects to the database, ensures that the database exists (and creates it if it doesn't using the Database::createDatabaseIfNotExists() function, which can be found in app/Database/DBConn.php), then calls the seed() function on every Seeder child class.
+- The app/Database/DBConn.php file enables all database interactions by providing the connection object through it's getConnection() function.
+- To load the .env file in the root directory, the app/Database/DBConn.php file uses the core/Functions/LoadEnv.php's EnvLoader class's load() function, which splits each entry into key value pairs and saves them using PHP's putenv() function.
+- Note that there is no CreateTable.php file as each Seeder file, e.g. UserSeeder.php and ProductSeeder.php, corresponds to it's own table and will handle the dropping and re-creation of it's specified table.
+- In addition, each Seeder has a CSV-like text data file to use when seeding, which can be found in the app/Seeders/data directory (the naming convention is {table's name}Data.php).
+- The only exception to this is the ProductImageSeeder as it's table requires actual images as well as text data. As a result, the app/Seeders/data/ProductImages directory contains images for the table and the app/Seeders/data/productImageData.txt file contains the text data for seeding that table. When seeding, the ProductImageSeeder copies the image files to the public/images/products directory but gives each file a unique name to avoid naming conflicts.
+- Every User seeded by the UserSeeder will have "password123" as their password, as can be seen in the 4th column in the app/Seeders/data/userData.txt file.
 
 ## Contributors:
 
