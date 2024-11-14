@@ -5,6 +5,11 @@
 - [Prerequisites](#prerequisites)
 - [Configuration Steps](#configuration-steps)
 - [Setting Up the Database](#setting-up-the-database)
+- [Troubleshooting](#troubleshooting)
+- [Running the Application](#running-the-application)
+- [Functionality](#functionality)
+- [Additional Information](#additional-information)
+- [Conclusion](#conclusion)
 
 ## Introduction
 This document outlines the necessary configurations for your XAMPP server to properly serve the Pastimes project.
