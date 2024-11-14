@@ -7,6 +7,7 @@
 - [Setting Up the Database](#setting-up-the-database)
 - [Troubleshooting](#troubleshooting)
 - [Running the Application](#running-the-application)
+- [File Structure](#file-structure)
 - [Functionality](#functionality)
 - [Additional Information](#additional-information)
 - [Contributors](#contributors)
@@ -229,6 +230,195 @@ Once Apache and MySQL are configured and running, navigate to the following URL 
 ```bash
 http://http://localhost/pastimes/
 ```
+
+
+## File Structure
+[file_structure.txt](https://github.com/Ryan-Millard/Pastimes-WEDE6021-POE/blob/main/file_structure.txt)
+```
+.
+├── README.md
+
+├── app
+
+│   ├── Controllers
+
+│   │   ├── AdminController.php
+
+│   │   ├── CategoryController.php
+
+│   │   ├── Controller.php
+
+│   │   ├── DashboardController.php
+
+│   │   ├── Error404Controller.php
+
+│   │   ├── HomeController.php
+
+│   │   ├── MessageController.php
+
+│   │   ├── ProductController.php
+
+│   │   ├── PurchaseController.php
+
+│   │   └── UserController.php
+
+│   ├── DI_Container.php
+
+│   ├── Database
+
+│   │   ├── DBConn.php
+
+│   │   ├── pastimes.sql
+
+│   │   └── tableStructure.docx
+
+│   ├── Middleware
+
+│   │   ├── AdminMiddleware.php
+
+│   │   ├── AuthMiddleware.php
+
+│   │   ├── BuyerMiddleware.php
+
+│   │   ├── GuestMiddleware.php
+
+│   │   └── SellerMiddleware.php
+
+│   ├── Models
+
+│   │   ├── AdminModel.php
+
+│   │   ├── BuyerModel.php
+
+│   │   ├── CategoryModel.php
+
+│   │   ├── MessageModel.php
+
+│   │   ├── Model.php
+
+│   │   ├── ProductImageModel.php
+
+│   │   ├── ProductModel.php
+
+│   │   ├── SellerModel.php
+
+│   │   ├── TransactionModel.php
+
+│   │   ├── TransactionProductModel.php
+
+│   │   ├── UserModel.php
+
+│   │   └── WishlistModel.php
+
+│   ├── Seeders
+
+│   │   ├── AdminSeeder.php
+
+│   │   ├── BuyerSeeder.php
+
+│   │   ├── CategorySeeder.php
+
+│   │   ├── MessageSeeder.php
+
+│   │   ├── ProductImageSeeder.php
+
+│   │   ├── ProductSeeder.php
+
+│   │   ├── SeedDatabase.php
+
+│   │   ├── Seeder.php
+
+│   │   ├── SeedingHelp.txt
+
+│   │   ├── SellerSeeder.php
+
+│   │   ├── TransactionProductSeeder.php
+
+│   │   ├── TransactionSeeder.php
+
+│   │   ├── UserSeeder.php
+
+│   │   ├── WishlistSeeder.php
+
+│   │   ├── data
+
+│   │   └── loadClothingStore.php
+
+│   ├── app.php
+
+│   └── views
+
+│       ├── 404.php
+
+│       ├── about.php
+
+│       ├── adminDashboard.php
+
+│       ├── category_list.php
+
+│       ├── checkout.php
+
+│       ├── contact.php
+
+│       ├── edit_product.php
+
+│       ├── home.php
+
+│       ├── login.php
+
+│       ├── message_list.php
+
+│       ├── new_listing.php
+
+│       ├── product_list.php
+
+│       ├── shared
+
+│       ├── signup.php
+
+│       ├── single_category.php
+
+│       ├── single_conversation.php
+
+│       ├── single_product.php
+
+│       ├── single_transaction.php
+
+│       ├── single_user.php
+
+│       ├── transactions_list.php
+
+│       ├── user.php
+
+│       └── userDashboard.php
+
+├── core
+
+│   ├── Functions
+│   │   ├── LoadEnv.php
+
+│   │   └── dd.php
+
+│   └── Router.php
+
+├── file_structure.txt
+
+└── public
+    
+    ├── css
+    
+    │   └── index.css
+    
+    ├── images
+    
+    │   ├── banner.webp
+    
+    │   └── products
+    
+    └── index.php
+```
+
+15 directories, 76 files
 
 ## Functionality
 
