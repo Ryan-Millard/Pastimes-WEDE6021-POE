@@ -221,6 +221,10 @@ Ensure that the .htaccess file in the public directory is set up correctly.
 
 If you are experiencing issues with it, consult the [Apache Documentation](https://httpd.apache.org/docs/current/howto/htaccess.html).
 
+### Seeding/Setting Up Database issues:
+
+Try re-running the script and ensure that the database is correctly referenced by every file in the project.
+
 ## Running the Application
 Once Apache and MySQL are configured and running, navigate to the following URL in your browser:
 ```bash
