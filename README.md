@@ -9,6 +9,7 @@
 - [Running the Application](#running-the-application)
 - [Functionality](#functionality)
 - [Additional Information](#additional-information)
+- [Contributors](#contributors)
 - [Conclusion](#conclusion)
 
 ## Introduction
@@ -287,6 +288,10 @@ A list of key features included in the project:
 - Wishlists Table: Stores products saved by users for future reference.
 - Categories Table: Stores the various categories of products available in the store.
 - Messages Table: Stores messages send by users and references two users (linked via user_id).
+
+## Contributors:
+
+- [Ryan Millard](https://github.com/Ryan-Millard)
 
 ## Conclusion
 Once the configurations are complete and Apache is restarted, you should be able to access your Pastimes application at `http://localhost/pastimes`.
