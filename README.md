@@ -69,6 +69,10 @@ Alias /pastimes "/path/to/your/pastimes/public"
 - Replace `/path/to/your/pastimes/public` with the actual path to the `public` directory of your Pastimes application, which is the directory in this application that contains the [index.php file](https://github.com/Ryan-Millard/Pastimes-WEDE6021-POE/blob/main/public/index.php).
 
 ### Example for Windows
+Run the command below, then paste the code into the file.
+
+    notepad C:\xampp\apache\conf\httpd.conf
+
 If your application is located at `C:\xampp\htdocs\pastimes`, the configuration will look like this:
 
 ```apache
@@ -115,19 +119,26 @@ Next, you need to create and configure the `httpd-vhosts.conf` file located in y
 ```
 
 #### Example for Windows
+Run the below command:
+
+    C:\xampp\apache\conf\extra\httpd-vhosts.conf
+
+Paste the code below into the file
 ```apache
+# Pastimes Project Configuration
 <VirtualHost *:80>
     ServerAdmin webmaster@localhost
-    DocumentRoot "C:/xampp/htdocs/pastimes/public"
-
-    <Directory "C:/xampp/htdocs/pastimes/public">
+    DocumentRoot "/path/to/your/pastimes/public"
+    ServerName pastimes.local
+    
+    ErrorLog "logs/pastimes-error.log"
+    CustomLog "logs/pastimes-access.log" combined
+    
+    <Directory "/path/to/your/pastimes/public">
         Options Indexes FollowSymLinks
         AllowOverride All
         Require all granted
     </Directory>
-
-    ErrorLog ${APACHE_LOG_DIR}/error.log
-    CustomLog ${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>
 ```
 
@@ -148,9 +159,6 @@ Open the file below
 Uncomment the following line in that file:
 
     #Include conf/extra/httpd-vhosts.conf
-Add the line below:
-
-    Include conf/extra/pastimes.conf
 
 ### 5. Restart XAMPP:
 
