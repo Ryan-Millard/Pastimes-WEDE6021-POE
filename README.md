@@ -54,6 +54,7 @@ cd Pastimes-WEDE6021-POE
 
 ### 1. Update `httpd.conf` or `apache2.conf`
 You need to add the following lines to your `httpd.conf` or `apache2.conf` file (possibly using elevated privileges), depending on your system:
+Note that the file's name depends on which system you are using.
 
 ```apache
 Alias /pastimes "/path/to/your/pastimes/public"
