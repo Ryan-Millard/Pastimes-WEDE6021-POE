@@ -2,6 +2,7 @@
 
 ## Table of Contents
 - [Introduction](#introduction)
+- [Warning](#warning)
 - [Prerequisites](#prerequisites)
 - [Configuration Steps](#configuration-steps)
 - [Setting Up the Database](#setting-up-the-database)
@@ -518,6 +519,16 @@ A list of key features included in the project:
 - In addition, each Seeder has a CSV-like text data file to use when seeding, which can be found in the app/Seeders/data directory (the naming convention is {table's name}Data.php).
 - The only exception to this is the ProductImageSeeder as it's table requires actual images as well as text data. As a result, the app/Seeders/data/ProductImages directory contains images for the table and the app/Seeders/data/productImageData.txt file contains the text data for seeding that table. When seeding, the ProductImageSeeder copies the image files to the public/images/products directory but gives each file a unique name to avoid naming conflicts.
 - Every User seeded by the UserSeeder will have "password123" as their password, as can be seen in the 4th column in the app/Seeders/data/userData.txt file.
+
+## Warning:
+This project may have issues on a normal Windows environment as it was developed using the Windows Subsystem for Linux (WSL2). The issue most likely lies in the use of `/` instead of `\` characters to separate files and directories as well as `./` vs `.\`. I have spent the past day (as soon as I found out that I needed to provide documentation on how to run the project on Windows specifically) trying to solve the issue and am now out of time.
+
+If necessary, there are many helpful resources online that show how to install WSL2 and it is quite a simple process. I recommend using Ubuntu as that is what I used when creating this project. I could assist in the setting up of the application if necessary at a later stage. I will probably be marked down if I continue to troubleshoot this process due to me working past the deadline for this assignment and I have already been marked down a lot in the past for minor details. You are more than welcome to contact me for assistance with this project via my student email and I could even provide you with my cellphone number over email if you'd prefer that method of communication. 
+
+Below is an error message that I frequently get for different files, which goes away when I change the slashes, however there are too many files in the project to finish changing them in time:
+```
+Fatal error: Uncaught Error: Failed opening required 'C:\Users\Nicholas\OneDrive\Desktop\Test\Pastimes-WEDE6021-POE\app\Controllers./../models/Model.php' (include_path='C:\xampp\php\PEAR') in C:\Users\Nicholas\OneDrive\Desktop\Test\Pastimes-WEDE6021-POE\app\Controllers\Controller.php:5 Stack trace: #0 C:\Users\Nicholas\OneDrive\Desktop\Test\Pastimes-WEDE6021-POE\app\Controllers\HomeController.php(9): require_once() #1 C:\Users\Nicholas\OneDrive\Desktop\Test\Pastimes-WEDE6021-POE\app\DI_Container.php(5): require_once('C:\\Users\\Nichol...') #2 C:\Users\Nicholas\OneDrive\Desktop\Test\Pastimes-WEDE6021-POE\app\app.php(6): require_once('C:\\Users\\Nichol...') #3 C:\Users\Nicholas\OneDrive\Desktop\Test\Pastimes-WEDE6021-POE\public\index.php(20): require_once('C:\\Users\\Nichol...') #4 {main} thrown in C:\Users\Nicholas\OneDrive\Desktop\Test\Pastimes-WEDE6021-POE\app\Controllers\Controller.php on line 5
+```
 
 ## Contributors:
 
