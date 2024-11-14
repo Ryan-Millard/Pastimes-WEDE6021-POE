@@ -33,7 +33,7 @@ You need to add the following lines to your `httpd.conf` or `apache2.conf` file 
 Alias /pastimes "/path/to/your/pastimes/public"
 
 <Directory "/path/to/your/pastimes/public">
-    Options Indexes FollowSymLinks Includes ExecCGI
+    Options Indexes FollowSymLinks s ExecCGI
     AllowOverride All
     Require all granted
 </Directory>
@@ -48,7 +48,7 @@ If your application is located at `C:\xampp\htdocs\pastimes`, the configuration 
 Alias /pastimes "C:/xampp/htdocs/pastimes/public"
 
 <Directory "C:/xampp/htdocs/pastimes/public">
-    Options Indexes FollowSymLinks Includes ExecCGI
+    Options Indexes FollowSymLinks s ExecCGI
     AllowOverride All
     Require all granted
 </Directory>
@@ -61,15 +61,17 @@ If your application is located at `/var/www/pastimes`, the configuration will lo
 Alias /pastimes "/var/www/pastimes/public"
 
 <Directory "/var/www/pastimes/public">
-    Options Indexes FollowSymLinks Includes ExecCGI
+    Options Indexes FollowSymLinks s ExecCGI
     AllowOverride All
     Require all granted
 </Directory>
 ```
 
 ### 2. Update `pastimes.conf`
-Next, you need to configure the `pastimes.conf` file located in your Apache `sites-available` directory:
+Next, you need to create and configure the `pastimes.conf` file located in your Apache `/etc/apache2/sites-available` or `C:\xampp\apache\conf\extra\
+` directory depending on your OS:
 
+#### Example for Linux
 ```apache
 <VirtualHost *:80>
     ServerAdmin webmaster@localhost
@@ -86,9 +88,7 @@ Next, you need to configure the `pastimes.conf` file located in your Apache `sit
 </VirtualHost>
 ```
 
-- Again, replace `/path/to/your/pastimes/public` with the actual path to your `public` directory.
-
-### Example for Windows
+#### Example for Windows
 ```apache
 <VirtualHost *:80>
     ServerAdmin webmaster@localhost
@@ -105,24 +105,35 @@ Next, you need to configure the `pastimes.conf` file located in your Apache `sit
 </VirtualHost>
 ```
 
-### Example for Linux
-```apache
-<VirtualHost *:80>
-    ServerAdmin webmaster@localhost
-    DocumentRoot "/var/www/pastimes/public"
+- Again, replace `/path/to/your/pastimes/public` with the actual path to your `public` directory.
 
-    <Directory "/var/www/pastimes/public">
-        Options Indexes FollowSymLinks
-        AllowOverride All
-        Require all granted
-    </Directory>
+### 3. Enable Site Configuration:
+#### Linux:
+    sudo a2ensite pastimes.conf
+#### Windows:
+Open the file below
 
-    ErrorLog ${APACHE_LOG_DIR}/error.log
-    CustomLog ${APACHE_LOG_DIR}/access.log combined
-</VirtualHost>
-```
+    C:\xampp\apache\conf\httpd.conf
+Uncomment the following line in that file:
 
-### 3. Enable mod_rewrite and permissions for Apache (Linux/Unix only):
+    #Include conf/extra/httpd-vhosts.conf
+Add the line below:
+
+    Include conf/extra/pastimes.conf
+
+### 4. Disable Default Site (Optional for Linux):
+
+#### Linux
+    sudo a2dissite 000-default.conf
+
+### 5. Restart Apache:
+
+#### Linux
+    sudo systemctl restart apache2
+
+
+
+### 5. Enable mod_rewrite and permissions for Apache (Linux/Unix only):
 ```bash
 sudo a2enmod rewrite
 sudo chmod -R 755 /path/to/your/pastimes/public
