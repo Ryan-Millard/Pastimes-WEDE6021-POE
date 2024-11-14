@@ -2,6 +2,9 @@
 
 namespace App\Seeders;
 
+require_once __DIR__ . '/../Database/DBConn.php';
+use App\Database\Database;
+
 require_once __DIR__ . '/UserSeeder.php';
 require_once __DIR__ . '/AdminSeeder.php';
 require_once __DIR__ . '/BuyerSeeder.php';
@@ -29,6 +32,12 @@ use App\Seeders\TransactionProductSeeder;
 class SeedDatabase {
 	public static function seed() {
 		try {
+			// Initialize the connection (won't create the database or load the dump)
+			Database::init();
+			// Create the database and load the SQL dump (only when you need to)
+			if(Database::createDatabaseIfNotExists())
+				return;
+
 			// Instantiate the UserSeeder class
 			$userSeeder = new UserSeeder();
 			$adminSeeder = new AdminSeeder();

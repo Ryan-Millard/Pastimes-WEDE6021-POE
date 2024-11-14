@@ -26,7 +26,7 @@ abstract class Seeder {
 	}
 
 	public function createTable() {
-		$sql = "CREATE TABLE `{$this->tableName}` ({$this->tableStructure})";
+		$sql = "CREATE OR REPLACE TABLE `{$this->tableName}` ({$this->tableStructure})";
 		if ($this->conn->query($sql) === FALSE) {
 			throw new \Exception("Error creating table: " . $this->conn->error);
 		}
