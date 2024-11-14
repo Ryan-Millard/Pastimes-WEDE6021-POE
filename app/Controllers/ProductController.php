@@ -61,9 +61,6 @@ class ProductController extends Controller {
 		// Get the seller's details
 		$sellerData = $this->sellerModel->getByUserId($userId);
 		$productData['seller_id'] = $sellerData['seller_id'];
-		// echo '<pre>';
-		// echo var_dump($productData);
-		// echo '</pre><br />';
 
 		$newProductId = $this->productModel->insert($productData);
 

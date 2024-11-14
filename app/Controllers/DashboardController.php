@@ -116,6 +116,6 @@ class DashboardController extends Controller {
 
 		$this->wishlistModel->deleteAllByBuyerId($buyerId);
 
-			return $this->redirect('/pastimes/dashboard#wishlist');
+		return $this->redirect('/pastimes/dashboard#wishlist');
 	}
 }
