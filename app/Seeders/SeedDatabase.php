@@ -53,15 +53,20 @@ class SeedDatabase {
 
 			// Execute the seed method for each table
 			// NB the order due to FKs
+			$userSeeder->seed();
 			$adminSeeder->seed();
 			$buyerSeeder->seed();
-			$userSeeder->seed();
 			$sellerSeeder->seed();
+
 			$categorySeeder->seed();
+
 			$productSeeder->seed();
 			$productImageSeeder->seed();
+
 			$wishlistSeeder->seed();
+
 			$messageSeeder->seed();
+
 			$transactionSeeder->seed();
 			$transactionProductSeeder->seed();
 
