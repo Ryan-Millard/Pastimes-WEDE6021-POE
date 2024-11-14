@@ -33,7 +33,7 @@ You need to add the following lines to your `httpd.conf` or `apache2.conf` file 
 Alias /pastimes "/path/to/your/pastimes/public"
 
 <Directory "/path/to/your/pastimes/public">
-    Options Indexes FollowSymLinks s ExecCGI
+    Options Indexes FollowSymLinks Includes ExecCGI
     AllowOverride All
     Require all granted
 </Directory>
@@ -48,7 +48,7 @@ If your application is located at `C:\xampp\htdocs\pastimes`, the configuration 
 Alias /pastimes "C:/xampp/htdocs/pastimes/public"
 
 <Directory "C:/xampp/htdocs/pastimes/public">
-    Options Indexes FollowSymLinks s ExecCGI
+    Options Indexes FollowSymLinks Includes ExecCGI
     AllowOverride All
     Require all granted
 </Directory>
@@ -61,15 +61,14 @@ If your application is located at `/var/www/pastimes`, the configuration will lo
 Alias /pastimes "/var/www/pastimes/public"
 
 <Directory "/var/www/pastimes/public">
-    Options Indexes FollowSymLinks s ExecCGI
+    Options Indexes FollowSymLinks Includes ExecCGI
     AllowOverride All
     Require all granted
 </Directory>
 ```
 
-### 2. Update `pastimes.conf`
-Next, you need to create and configure the `pastimes.conf` file located in your Apache `/etc/apache2/sites-available` or `C:\xampp\apache\conf\extra\
-` directory depending on your OS:
+### 2. Update `httpd-vhosts.conf`
+Next, you need to create and configure the `httpd-vhosts.conf` file located in your Apache `/opt/lampp/etc/` or `C:\xampp\apache\conf\extra\` directory depending on your OS:
 
 #### Example for Linux
 ```apache
@@ -109,7 +108,12 @@ Next, you need to create and configure the `pastimes.conf` file located in your 
 
 ### 3. Enable Site Configuration:
 #### Linux:
-    sudo a2ensite pastimes.conf
+Open the file below
+
+    /opt/lampp/etc/httpd.conf
+Uncomment the following line in that file:
+
+    #Include conf/extra/httpd-vhosts.conf
 #### Windows:
 Open the file below
 
@@ -121,17 +125,14 @@ Add the line below:
 
     Include conf/extra/pastimes.conf
 
-### 4. Disable Default Site (Optional for Linux):
+### 5. Restart XAMPP:
 
 #### Linux
-    sudo a2dissite 000-default.conf
-
-### 5. Restart Apache:
-
-#### Linux
-    sudo systemctl restart apache2
-
-
+    sudo /opt/lampp/lampp restart
+    
+#### Windows
+    C:\xampp\xampp_stop
+    C:\xampp\xampp_start
 
 ### 5. Enable mod_rewrite and permissions for Apache (Linux/Unix only):
 ```bash
@@ -168,15 +169,7 @@ This topic covers setting up a new database with fictitious entries as well as s
   ```bash
   C:\xampp\xampp_start.exe
   ```
-
-### 2. Open the project and navigate to the app/Seedeers directory:
-
-- On all operating systems
-    ```bash
-    cd app/Seeders
-    ```
-
-### 3. Creating the .env file (if it doesn't exist) and ensure that it contains the below:
+### 2. Creating the .env file (if it doesn't exist) and ensure that it contains the below:
 
 To get started with connecting to the database, you will need to create a .env file in the root directory of the project.
 Once you have created it, open it in your preferred text editor and paste the below into the file:
@@ -188,12 +181,20 @@ Once you have created it, open it in your preferred text editor and paste the be
 
 If you would like to create a custom configuration, see the [phpMyAdmin Documentation](https://docs.phpmyadmin.net/en/latest/user.html).
 Remember to update the .env file to reference the newly created credentials for you database, including the user's username and password, the database name, and the host.
+If you use a different database name, you will need to change it in several files to reflect your DB's name, however that would be a long process, so that is not recommended.
 
 #### Note:
 - You will need to ensure that all details in the file are exactly the same as what phpMyAdmin has been configured with.
 - Unless you have created the database under a different name, you cannot change the DB_DATABASE as it will not function correctly if you do.
 
 To connect to to the database, you only require those four credentials. The core/Functions/LoadEnv.php's EnvLoader class's load function only loads those four, so keep that in mind when configuring the .env file.
+
+### 3. Open the project and navigate to the app/Seedeers directory:
+
+- On all operating systems
+    ```bash
+    cd app/Seeders
+    ```
 
 ### 4. Using PHP, execute the [loadClothingStore.php script](https://github.com/Ryan-Millard/Pastimes-WEDE6021-POE/blob/main/app/Seeders/loadClothingStore.php):
 
