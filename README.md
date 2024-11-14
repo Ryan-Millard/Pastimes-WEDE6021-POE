@@ -19,6 +19,25 @@ This document outlines the necessary configurations for your XAMPP server to pro
 ## Project Overview
 Pastimes is a second-hand e-clothing store built using PHP. It allows users to browse, buy, and sell clothing items, while managing their transactions and wishlists. The project follows an MVC architecture and includes features such as user authentication, product listings, and transaction management.
 
+## Key Features
+- User Login: Allows users of all types to log in and view items in the clothing store.
+- Admin privileges: Allows administrators to manage the clothing store, including products and other users.
+- Clothing Store View: Displays available clothing items to the users.
+- Database Setup: Includes PHP scripts that execute SQL scripts to set up all necessary database tables for storing information in every table required by the application.
+- Responsive Design: Minimalistic and responsive CSS design.
+
+## Key Files
+See [File Structure](#file-structure) to locate each file in the project.
+
+- index.php: All requests are routed through this file, which requires the header.php and footer.php views as well as the app.php file.
+- .htaccess: Configures Apache to serve all incoming requests to the index.php file.
+- app.php: Registers controllers and middleware with their respective routes in the Router.php file.
+- Router.php: Formats every route on the website to hide the internal workings of the backend server as well as maps middleware and controllers to their respective routes within the website.
+- DI_Container.php: The Dependecny Injection container for all models, middlewares, and controllers.
+- DBConn.php: Establishes and provides other code with a static connection to the database.
+- loadClothingStore.php: The file used to initially set up the database and then seed it at later stages.
+- LoadEnv.php: Loads the environment variables in the .env file.
+
 ## Prerequisites
 - Ensure you have Git installed on your machine.
 - Ensure you have [XAMPP](https://www.apachefriends.org/download.html) installed on your system (Windows/Linux).
