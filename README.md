@@ -189,7 +189,13 @@ If you use a different database name, you will need to change it in several file
 
 To connect to to the database, you only require those four credentials. The core/Functions/LoadEnv.php's EnvLoader class's load function only loads those four, so keep that in mind when configuring the .env file.
 
-### 3. Open the project and navigate to the app/Seedeers directory:
+### 3. Create the `public/images/products/` directory
+
+On every OS:
+
+    mkdir public/images/products/
+
+### 4. Open the project and navigate to the app/Seedeers directory:
 
 - On all operating systems
     ```bash
