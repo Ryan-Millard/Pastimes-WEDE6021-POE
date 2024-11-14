@@ -39,8 +39,8 @@ See [File Structure](#file-structure) to locate each file in the project.
 - LoadEnv.php: Loads the environment variables in the .env file.
 
 ## Prerequisites
-- Ensure you have Git installed on your machine.
-- Ensure you have [XAMPP](https://www.apachefriends.org/download.html) installed on your system (Windows/Linux).
+- Ensure you have Git installed on your machine - git version 2.34.1.
+- Ensure you have [XAMPP](https://www.apachefriends.org/download.html) installed on your system - Version: XAMPP for Linux 8.1.25-0 or higher.
 - You should have access to the configuration files for Apache.
 
 ## Pulling the repository to your local machine:
