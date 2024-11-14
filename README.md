@@ -245,6 +245,7 @@ On every OS:
   This script can be used to set up the database for the first time and to seed it at a later stage.
 
 ## Troubleshooting
+Ensure that all files have the necessary permissions as Apache will need access to them to serve them. It is different on every machine. On windows, you right-click the directory, go to properties>security and allow Apache access. On Linux, you need to use chmod.
 ### Application not loading:
 Ensure that the .htaccess file in the public directory is set up correctly.
 
