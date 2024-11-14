@@ -134,20 +134,13 @@ Add the line below:
     C:\xampp\xampp_stop
     C:\xampp\xampp_start
 
-### 5. Enable mod_rewrite and permissions for Apache (Linux/Unix only):
-```bash
-sudo a2enmod rewrite
-sudo chmod -R 755 /path/to/your/pastimes/public
-```
-- Replace /path/to/your/pastimes/public witht the actual path to that directory on your machine.
-
 ### Final Steps
 1. **Save Changes**: After updating the configuration files, save your changes.
 2. **Restart Apache**: Restart the Apache server to apply the changes. You can use the following command:
 
    - On Linux:
      ```bash
-     sudo systemctl restart apache2
+     sudo /opt/lampp/lampp restart
      ```
 
    - On Windows, use the XAMPP Control Panel or run:
